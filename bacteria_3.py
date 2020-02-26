@@ -14,7 +14,24 @@ def reserch_colony(colony):
     if len(colony) < 2:
         return False
 
+    num_elements = []
+    for i in colony: # записываем в отдельный массив данные о количестве единиц
+        num_elements.append(i[1])
 
+    # print(num_elements)
+    n = 1
+    while num_elements:
+        if len(num_elements) == 1 and num_elements.pop(0) == n:
+            continue
+        elif len(num_elements) == 1:
+            return False
+
+        if num_elements.pop(0) == num_elements.pop(-1) == n:
+            n += 2
+        else:
+            return False
+
+    print(n)
 
     return True
 
@@ -32,8 +49,8 @@ def healthy(grid):
             # print(grid[row][col])
             if grid[row][col] == 1: # находим единицу и начитаем считать длинну
                 n += 1
-            elif n != 0: # если единицы кончились и N больше или равен 3 значит это может быть колония
-                if n > 0 and n%2 != 0:
+            elif n != 0: # если единицы кончились и N больше нуля - пишем данные в базу
+                if n > 0 and n%2 != 0: # проверяем на нечетность, четных линий быть не может
                     hor_lines.append([[row, col-(n//2)-1], n]) # находим центральное звено
                 n = 0
         if n > 2 and n%2 != 0: # Если строка закончилась и N больше или равен 3 - значит это может быть колония
@@ -50,18 +67,26 @@ def healthy(grid):
     vertikal = ver_lines[0][0][1]
     start_row = ver_lines[0][0][0] - 1
     temp_colony = []
-    colonies = []
+
+    colonies = [] # база с разделенными колониями бактерий, осталось проверить правильность формы
+
     for i in ver_lines:
         if (i[0][1] == vertikal) and (i[0][0] == start_row + 1):
             temp_colony.append(i)
             start_row += 1
         else:
-            colonies.append(temp_colony)
+            # Перед добавлением колонии в базу надо проверить ее на равенство горизонтали и вертикали
+            # полная проверка колонии в отдельной функции, возвращяет TRUE если все норм
+            if reserch_colony(temp_colony):
+                colonies.append(temp_colony)
+            # print(temp_colony[len(temp_colony)//2][1], len(temp_colony))
             temp_colony = []
             temp_colony.append(i)
             vertikal = i[0][1]
             start_row = i[0][0]
-    colonies.append(temp_colony)
+    if reserch_colony(temp_colony):
+        colonies.append(temp_colony)
+    # print(temp_colony[len(temp_colony) // 2][1], len(temp_colony))
 
 
 
@@ -89,22 +114,22 @@ if __name__ == '__main__':
     #                (0, 0, 1, 0, 0),
     #                (0, 0, 1, 0, 0),
     #                (0, 0, 1, 0, 0),)), [[0, 0]])
-    check(healthy(((0, 0, 0, 0, 0, 0, 1, 0),
-                   (0, 0, 1, 0, 0, 1, 1, 1),
-                   (0, 1, 1, 1, 0, 0, 1, 0),
-                   (1, 1, 1, 1, 1, 0, 0, 0),
-                   (0, 1, 1, 1, 0, 0, 1, 0),
-                   (0, 0, 1, 0, 0, 1, 1, 1),
-                   (0, 0, 0, 0, 0, 0, 1, 0),)), [[3, 2]])
-    # check(healthy(((0, 0, 0, 0, 0, 0, 2, 0),
-    #                (0, 0, 0, 2, 2, 2, 2, 2),
-    #                (0, 0, 1, 0, 0, 0, 2, 0),
-    #                (0, 1, 1, 1, 0, 0, 2, 0),
-    #                (1, 1, 1, 1, 1, 0, 2, 0),
-    #                (0, 1, 1, 1, 0, 0, 2, 0),
-    #                (0, 0, 1, 0, 0, 0, 2, 0),
-    #                (0, 0, 0, 1, 0, 0, 2, 0),
-    #                (0, 0, 1, 1, 1, 0, 2, 0),
-    #                (0, 1, 1, 1, 1, 1, 0, 0),
-    #                (0, 0, 1, 1, 1, 0, 0, 0),
-    #                (0, 0, 0, 1, 0, 0, 0, 0),)), [[4, 2], [9, 3]])
+    # check(healthy(((0, 0, 0, 0, 0, 0, 1, 0),
+    #                (0, 0, 1, 0, 0, 1, 1, 1),
+    #                (0, 1, 1, 1, 0, 0, 1, 0),
+    #                (1, 1, 1, 1, 1, 0, 0, 0),
+    #                (0, 1, 1, 1, 0, 0, 1, 0),
+    #                (0, 0, 1, 0, 0, 1, 1, 1),
+    #                (0, 0, 0, 0, 0, 0, 1, 0),)), [[3, 2]])
+    check(healthy(((0, 0, 0, 0, 0, 0, 2, 0),
+                   (0, 0, 0, 2, 2, 2, 2, 2),
+                   (0, 0, 1, 0, 0, 0, 2, 0),
+                   (0, 1, 1, 1, 0, 0, 2, 0),
+                   (1, 1, 1, 1, 1, 0, 2, 0),
+                   (0, 1, 1, 1, 0, 0, 2, 0),
+                   (0, 0, 1, 0, 0, 0, 2, 0),
+                   (0, 0, 0, 1, 0, 0, 2, 0),
+                   (0, 0, 1, 1, 1, 0, 2, 0),
+                   (0, 1, 1, 1, 1, 1, 0, 0),
+                   (0, 0, 1, 1, 1, 0, 0, 0),
+                   (0, 0, 0, 1, 0, 0, 0, 0),)), [[4, 2], [9, 3]])
