@@ -1,3 +1,23 @@
+def reserch_colony(colony):
+    """"
+    Функция проверяет колонию на правильность (ромб)
+    Принимаем данные вида:
+    [[[2, 2], 1], [[3, 2], 3], [[4, 2], 5], [[5, 2], 3], [[6, 2], 1]]
+    Возвращаем:
+    True - правильная колония
+    False - не правильная колония
+    """
+
+    if colony[len(colony) // 2][1] != len(colony):
+        return False
+
+    if len(colony) < 2:
+        return False
+
+
+
+    return True
+
 
 def healthy(grid):
 
