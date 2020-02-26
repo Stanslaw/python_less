@@ -31,7 +31,7 @@ def reserch_colony(colony):
         else:
             return False
 
-    print(n)
+    # print(n)
 
     return True
 
@@ -78,22 +78,33 @@ def healthy(grid):
             # Перед добавлением колонии в базу надо проверить ее на равенство горизонтали и вертикали
             # полная проверка колонии в отдельной функции, возвращяет TRUE если все норм
             if reserch_colony(temp_colony):
-                colonies.append(temp_colony)
+                colonies.append(temp_colony[len(temp_colony)//2]) # пишем в базу только центральное звено и размер
             # print(temp_colony[len(temp_colony)//2][1], len(temp_colony))
             temp_colony = []
             temp_colony.append(i)
             vertikal = i[0][1]
             start_row = i[0][0]
     if reserch_colony(temp_colony):
-        colonies.append(temp_colony)
+        colonies.append(temp_colony[len(temp_colony)//2])
     # print(temp_colony[len(temp_colony) // 2][1], len(temp_colony))
 
+    if not colonies: # если колоний в матрице нет вовсе - возвращаем [0, 0]
+        print([[0, 0]])
+        return [[0, 0]]
 
+    f_colonies = sorted(colonies, key=(lambda x: x[1]), reverse=True)
 
-    for i in colonies:
-        print("\n", i)
+    while f_colonies[-1][1] != f_colonies[0][1]: # удаляем все колонии не максимальной длинны
+        f_colonies.pop(-1)
 
-    return 0, 0 # hearts_of_colonies
+    result_colony = []
+
+    for i in f_colonies:
+        result_colony.append(i[0])
+
+    print(result_colony)
+
+    return result_colony
 
 
 if __name__ == '__main__':
@@ -101,26 +112,26 @@ if __name__ == '__main__':
     def check(result, answers):
         return list(result) in answers
 
-    # check(healthy(((0, 1, 0),
-    #                (1, 1, 1),
-    #                (0, 1, 0),)), [[1, 1]])
-    # check(healthy(((0, 0, 1, 0, 0),
-    #                (0, 1, 1, 1, 0),
-    #                (0, 0, 1, 0, 0),
-    #                (0, 0, 0, 0, 0),
-    #                (0, 0, 1, 0, 0),)), [[1, 2]])
-    # check(healthy(((0, 0, 1, 0, 0),
-    #                (0, 1, 1, 1, 0),
-    #                (0, 0, 1, 0, 0),
-    #                (0, 0, 1, 0, 0),
-    #                (0, 0, 1, 0, 0),)), [[0, 0]])
-    # check(healthy(((0, 0, 0, 0, 0, 0, 1, 0),
-    #                (0, 0, 1, 0, 0, 1, 1, 1),
-    #                (0, 1, 1, 1, 0, 0, 1, 0),
-    #                (1, 1, 1, 1, 1, 0, 0, 0),
-    #                (0, 1, 1, 1, 0, 0, 1, 0),
-    #                (0, 0, 1, 0, 0, 1, 1, 1),
-    #                (0, 0, 0, 0, 0, 0, 1, 0),)), [[3, 2]])
+    check(healthy(((0, 1, 0),
+                   (1, 1, 1),
+                   (0, 1, 0),)), [[1, 1]])
+    check(healthy(((0, 0, 1, 0, 0),
+                   (0, 1, 1, 1, 0),
+                   (0, 0, 1, 0, 0),
+                   (0, 0, 0, 0, 0),
+                   (0, 0, 1, 0, 0),)), [[1, 2]])
+    check(healthy(((0, 0, 1, 0, 0),
+                   (0, 1, 1, 1, 0),
+                   (0, 0, 1, 0, 0),
+                   (0, 0, 1, 0, 0),
+                   (0, 0, 1, 0, 0),)), [[0, 0]])
+    check(healthy(((0, 0, 0, 0, 0, 0, 1, 0),
+                   (0, 0, 1, 0, 0, 1, 1, 1),
+                   (0, 1, 1, 1, 0, 0, 1, 0),
+                   (1, 1, 1, 1, 1, 0, 0, 0),
+                   (0, 1, 1, 1, 0, 0, 1, 0),
+                   (0, 0, 1, 0, 0, 1, 1, 1),
+                   (0, 0, 0, 0, 0, 0, 1, 0),)), [[3, 2]])
     check(healthy(((0, 0, 0, 0, 0, 0, 2, 0),
                    (0, 0, 0, 2, 2, 2, 2, 2),
                    (0, 0, 1, 0, 0, 0, 2, 0),
