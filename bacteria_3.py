@@ -19,33 +19,34 @@ def healthy(grid):
         if n > 2 and n%2 != 0: # Если строка закончилась и N больше или равен 3 - значит это может быть колония
             hor_lines.append([[row, col-(n//2)], n])
 
-    print(hor_lines)
+    # print(hor_lines)
 
     # сортируем фигуры по вертикалям
 
     ver_lines = sorted(hor_lines, key=(lambda x: x[0][1]))
-    print("\n", ver_lines)
+    # print("\n", ver_lines)
 
-    # Теперь перебираем массив с вертикальными направляющими и проверяем на расхождение и схождение
+    # Разделяем колонии на отдельные сущности заодно проверяем их на сходимость - длинна равна ширине
+    vertikal = ver_lines[0][0][1]
+    start_row = ver_lines[0][0][0] - 1
+    temp_colony = []
+    colonies = []
+    for i in ver_lines:
+        if (i[0][1] == vertikal) and (i[0][0] == start_row + 1):
+            temp_colony.append(i)
+            start_row += 1
+        else:
+            colonies.append(temp_colony)
+            temp_colony = []
+            temp_colony.append(i)
+            vertikal = i[0][1]
+            start_row = i[0][0]
+    colonies.append(temp_colony)
 
-    # size_ones = 1
-    # back_direction = False
-    # top_direction = True
-    # for i in ver_lines:
-    #
-    #     search_line = i[0][1]
-    #     if top_direction and i[1] == size_ones: # если идем на увеличение прибавляем по 2 и сравниваем с массивом
-    #         size_ones += 2
-    #     else:
-    #         top_direction = False
-    #         back_direction = True
-    #         size_ones -= 4
-    #
-    #     if back_direction and i[1] == size_ones:
-    #         size_ones -= 2
-    #     elif back_direction:
-    #         #####
 
+
+    for i in colonies:
+        print("\n", i)
 
     return 0, 0 # hearts_of_colonies
 
