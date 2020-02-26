@@ -26,25 +26,7 @@ def healthy(grid):
     ver_lines = sorted(hor_lines, key=(lambda x: x[0][1]))
     print("\n", ver_lines)
 
-    # Теперь перебираем массив с вертикальными направляющими и проверяем на расхождение и схождение
-
-    # size_ones = 1
-    # back_direction = False
-    # top_direction = True
-    # for i in ver_lines:
-    #
-    #     search_line = i[0][1]
-    #     if top_direction and i[1] == size_ones: # если идем на увеличение прибавляем по 2 и сравниваем с массивом
-    #         size_ones += 2
-    #     else:
-    #         top_direction = False
-    #         back_direction = True
-    #         size_ones -= 4
-    #
-    #     if back_direction and i[1] == size_ones:
-    #         size_ones -= 2
-    #     elif back_direction:
-    #         #####
+   
 
 
     return 0, 0 # hearts_of_colonies
