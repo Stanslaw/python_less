@@ -1,5 +1,26 @@
 def wall_keeper(on_panels):
 
+    def switch_light_panel(row, col):
+        """
+        Функция получает на вход координаты световой ячейки и переключает ячейку чтобы ее выключить.
+        Возвращаем номер тумплера который нажимаем.
+        """
+
+        wall_matrix[row][col][1] = not wall_matrix[row][col][1]
+
+        if row > 0:
+            wall_matrix[row-1][col][1] = not wall_matrix[row-1][col][1]
+        if row < 4:
+            wall_matrix[row+1][col][1] = not wall_matrix[row+1][col][1]
+        if col > 0:
+            wall_matrix[row][col-1][1] = not wall_matrix[row][col-1][1]
+        if col < 4:
+            wall_matrix[row][col+1][1] = not wall_matrix[row][col+1][1]
+
+
+
+        return wall_matrix[row][col][0]
+
     # 1. заполним массив данными
     wall_matrix = []
     for row in range(5):
@@ -14,7 +35,38 @@ def wall_keeper(on_panels):
     for i in wall_matrix: # визуализируем матрицу для удобства дальнейшего планирования
         print(i)
 
+
+    # 2. Бегаем по матрице сверху вниз и переключаем тумблеры
+    answers = []
+    for row in range(4):
+        for col in range(5):
+            if wall_matrix[row][col][1]:
+                answers.append(switch_light_panel(row+1, col))
+
+    print("\n answers =", answers) # проверяем ответ перед return
+    print("\n")
+    for i in wall_matrix: # визуализируем матрицу для удобства дальнейшего планирования
+        print(i)
     return []
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     #These "asserts" using only for self-checking and not necessary for auto-testing
