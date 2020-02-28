@@ -3,9 +3,8 @@ def wall_keeper(on_panels):
     def switch_light_panel(row, col):
         """
         Функция получает на вход координаты световой ячейки и переключает ячейку чтобы ее выключить.
-        Возвращаем номер тумплера который нажимаем.
+        Возвращаем номер тумблера который нажимаем.
         """
-
         wall_matrix[row][col][1] = not wall_matrix[row][col][1]
 
         if row > 0:
@@ -17,9 +16,8 @@ def wall_keeper(on_panels):
         if col < 4:
             wall_matrix[row][col+1][1] = not wall_matrix[row][col+1][1]
 
-
-
         return wall_matrix[row][col][0]
+
 
     # 1. заполним массив данными
     wall_matrix = []
