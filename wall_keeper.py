@@ -42,36 +42,53 @@ def wall_keeper(on_panels):
     #             answers.append(switch_light_panel(row+1, col))
 
 
-    # 3. Делаем тренажер чтобы самостоятельно потыкать и попробовать разные логики решения
+    # 2.1.  Бегаем по матрице с левого верхнего в правый нижний угол и переключаем тумблеры
     answers = []
-    choise = 1
-    while 0 < choise < 26:
-        choise = int(input("Номер ячейки: "))
+
+    n_koef = 0
+    while n_koef < 9:
+
         for row in range(5):
             for col in range(5):
-                if wall_matrix[row][col][0] == choise:
-                    answers.append(switch_light_panel(row, col))
+                if row + col == n_koef and wall_matrix[row][col][1]:
+                    if row < 4:
+                        answers.append(switch_light_panel(row + 1, col))
+                    elif col < 4:
+                        answers.append(switch_light_panel(row, col + 1))
+
+        n_koef += 1
 
 
-                    for i in wall_matrix:  # визуализируем матрицу для удобства дальнейшего планирования
-                        tmp_str = []
-                        for j in i:
-                            if j[1] == False:
-                                if j[0] < 10:
-                                    tmp_str.append("0"+str(j[0]))
-                                else:
-                                    tmp_str.append(str(j[0]))
-                            else:
-                                if j[0] < 10:
-                                    tmp_str.append("*0" + str(j[0]))
-                                else:
-                                    tmp_str.append("*" + str(j[0]))
-                        print(tmp_str)
-
-
-
-
-                    break
+    # 3. Делаем тренажер чтобы самостоятельно потыкать и попробовать разные логики решения
+    # answers = []
+    # choise = 1
+    # while 0 < choise < 26:
+    #     choise = int(input("Номер ячейки: "))
+    #     for row in range(5):
+    #         for col in range(5):
+    #             if wall_matrix[row][col][0] == choise:
+    #                 answers.append(switch_light_panel(row, col))
+    #
+    #
+    #                 for i in wall_matrix:  # визуализируем матрицу для удобства дальнейшего планирования
+    #                     tmp_str = []
+    #                     for j in i:
+    #                         if j[1] == False:
+    #                             if j[0] < 10:
+    #                                 tmp_str.append("0"+str(j[0]))
+    #                             else:
+    #                                 tmp_str.append(str(j[0]))
+    #                         else:
+    #                             if j[0] < 10:
+    #                                 tmp_str.append("*0" + str(j[0]))
+    #                             else:
+    #                                 tmp_str.append("*" + str(j[0]))
+    #                     print(tmp_str)
+    #
+    #
+    #
+    #
+    #                 break
 
     print("\n answers =", answers) # проверяем ответ перед return
     print("\n")
