@@ -35,11 +35,43 @@ def wall_keeper(on_panels):
 
 
     # 2. Бегаем по матрице сверху вниз и переключаем тумблеры
+    # answers = []
+    # for row in range(4):
+    #     for col in range(5):
+    #         if wall_matrix[row][col][1]:
+    #             answers.append(switch_light_panel(row+1, col))
+
+
+    # 3. Делаем тренажер чтобы самостоятельно потыкать и попробовать разные логики решения
     answers = []
-    for row in range(4):
-        for col in range(5):
-            if wall_matrix[row][col][1]:
-                answers.append(switch_light_panel(row+1, col))
+    choise = 1
+    while 0 < choise < 26:
+        choise = int(input("Номер ячейки: "))
+        for row in range(5):
+            for col in range(5):
+                if wall_matrix[row][col][0] == choise:
+                    answers.append(switch_light_panel(row, col))
+
+
+                    for i in wall_matrix:  # визуализируем матрицу для удобства дальнейшего планирования
+                        tmp_str = []
+                        for j in i:
+                            if j[1] == False:
+                                if j[0] < 10:
+                                    tmp_str.append("0"+str(j[0]))
+                                else:
+                                    tmp_str.append(str(j[0]))
+                            else:
+                                if j[0] < 10:
+                                    tmp_str.append("*0" + str(j[0]))
+                                else:
+                                    tmp_str.append("*" + str(j[0]))
+                        print(tmp_str)
+
+
+
+
+                    break
 
     print("\n answers =", answers) # проверяем ответ перед return
     print("\n")
