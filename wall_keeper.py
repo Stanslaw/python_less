@@ -72,6 +72,10 @@ def wall_keeper(on_panels):
     #     print(i)
     return answers
 
+
+# Если необходим кротчайший ответ можно прибегнуть к статистическому методу
+# Переигрываем 25-100 различных вариаций и находим оптимальное решение
+
 all_answers = []
 for i in range(25):
     all_answers.append(wall_keeper([5, 7, 13, 14, 18]))
