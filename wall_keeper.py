@@ -1,4 +1,24 @@
+from random import randint
+
 def wall_keeper(on_panels):
+
+    def all_false():
+        """
+        Функция проверяет матрицу на то что все элементы имеют ключь False, в противном случае возвращает False
+        """
+        for row_a_f in range(5):
+            for col_a_f in range(5):
+                if wall_matrix[row_a_f][col_a_f][1]:
+                    # перед выходом из матрицы добавляем в первую строчку в случайный элемент переключатель
+                    # таким образом через определенное количество итераций мы погасим все переключатели
+
+                    x = randint(0, 4)
+                    # x = 2
+                    # print("X - ", x)
+                    answers.append(switch_light_panel(0, x))
+
+                    return False
+        return True
 
     def switch_light_panel(row, col):
         """
@@ -30,89 +50,42 @@ def wall_keeper(on_panels):
                 row_matrix.append([(5*row)+col+1, False])
         wall_matrix.append(row_matrix)
 
-    for i in wall_matrix: # визуализируем матрицу для удобства дальнейшего планирования
-        print(i)
+    # for i in wall_matrix: # визуализируем матрицу для удобства дальнейшего планирования
+    #     print(i)
 
 
     # 2. Бегаем по матрице сверху вниз и переключаем тумблеры
-    # answers = []
-    # for row in range(4):
-    #     for col in range(5):
-    #         if wall_matrix[row][col][1]:
-    #             answers.append(switch_light_panel(row+1, col))
-
-
-    # 2.1.  Бегаем по матрице с левого верхнего в правый нижний угол и переключаем тумблеры
     answers = []
-
-    n_koef = 0
-    while n_koef < 9:
-
-        for row in range(5):
-            for col in range(5):
-                if row + col == n_koef and wall_matrix[row][col][1]:
-                    if row < 4:
-                        answers.append(switch_light_panel(row + 1, col))
-                    elif col < 4:
-                        answers.append(switch_light_panel(row, col + 1))
-
-        n_koef += 1
-
-
-    # 3. Делаем тренажер чтобы самостоятельно потыкать и попробовать разные логики решения
-    # answers = []
-    # choise = 1
-    # while 0 < choise < 26:
-    #     choise = int(input("Номер ячейки: "))
-    #     for row in range(5):
-    #         for col in range(5):
-    #             if wall_matrix[row][col][0] == choise:
-    #                 answers.append(switch_light_panel(row, col))
-    #
-    #
-    #                 for i in wall_matrix:  # визуализируем матрицу для удобства дальнейшего планирования
-    #                     tmp_str = []
-    #                     for j in i:
-    #                         if j[1] == False:
-    #                             if j[0] < 10:
-    #                                 tmp_str.append("0"+str(j[0]))
-    #                             else:
-    #                                 tmp_str.append(str(j[0]))
-    #                         else:
-    #                             if j[0] < 10:
-    #                                 tmp_str.append("*0" + str(j[0]))
-    #                             else:
-    #                                 tmp_str.append("*" + str(j[0]))
-    #                     print(tmp_str)
-    #
-    #
-    #
-    #
-    #                 break
-
-    print("\n answers =", answers) # проверяем ответ перед return
-    print("\n")
-    for i in wall_matrix: # визуализируем матрицу для удобства дальнейшего планирования
-        print(i)
-    return []
+    while not all_false():
+        for row in range(4):
+            for col in range(4, -1, -1):
+                if wall_matrix[row][col][1]:
+                    answers.append(switch_light_panel(row+1, col))
 
 
 
 
 
+    # print("\n answers =", answers) # проверяем ответ перед return
+    # print("\n")
+    # for i in wall_matrix: # визуализируем матрицу для удобства дальнейшего планирования
+    #     print(i)
+    return answers
+
+all_answers = []
+for i in range(25):
+    all_answers.append(wall_keeper([5, 7, 13, 14, 18]))
+
+min_l = len(all_answers[0])
+min_ans = all_answers[0]
+for i in all_answers:
+    if min_l > len(i):
+        min_l = len(i)
+        min_ans = i
 
 
-
-
-
-
-
-
-
-
-
-
-
+print(all_answers)
+print("MIN ANS = ", min_ans)
 
 
 if __name__ == '__main__':
@@ -137,6 +110,6 @@ if __name__ == '__main__':
                 p[r][c-1] = 1 - p[r][c-1]
         return sum(chain(*p)) == 0
 
-    assert checker(wall_keeper, [5, 7, 13, 14, 18]), 'basic'
+    # assert checker(wall_keeper, [5, 7, 13, 14, 18]), 'basic'
     assert checker(wall_keeper, list(range(1, 26))), 'all_lights'
 
