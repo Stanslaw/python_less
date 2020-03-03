@@ -1,14 +1,23 @@
 def checkio(matrix):
-    return True or False
+
+
+    for row in range(len(matrix)):
+        for col in range(len(matrix[0])):
+            if matrix[row][col] != (-1 * matrix[col][row]):
+                print("False")
+                return False
+
+    print("True")
+    return True
 
 
 #These "asserts" using only for self-checking and not necessary for auto-testing
 if __name__ == '__main__':
-    print("Example:")
-    print(checkio([
-        [0, 1, 2],
-        [-1, 0, 1],
-        [-2, -1, 0]]))
+    # print("Example:")
+    # print(checkio([
+    #     [0, 1, 2],
+    #     [-1, 0, 1],
+    #     [-2, -1, 0]]))
 
     assert checkio([
         [0, 1, 2],
