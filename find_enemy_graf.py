@@ -57,6 +57,8 @@ def find_enemy(you, dir, enemy):
 
 
 
+
+
     def dfs_paths(graph, start, goal):
     # перебираем граф в поисках путей между точками
         stack = [(start, [start])]
@@ -83,6 +85,7 @@ def find_enemy(you, dir, enemy):
             return next(bfs_paths(graph, start, goal))
         except StopIteration:
             return None
+
 
 
 
