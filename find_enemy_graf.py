@@ -1,7 +1,7 @@
 
 def find_enemy(you, dir, enemy):
 
-    # сперва надо научиться определять расстояние от точки до точки111.
+    # сперва надо научиться определять расстояние от точки до точки.
 
     # Надо делать граф который сразу формирует звенья с данными направления
     # https://eddmann.com/posts/depth-first-search-and-breadth-first-search-in-python/
@@ -35,7 +35,7 @@ def find_enemy(you, dir, enemy):
         # выбираем правильные цифры для правого и левого столбцов в зависимости от четности
         if num_char(char) % 2 == 0:
             dig_zone = [num-1, num]
-            if num <= max(int(you_dg), int(en_dg)):
+            if num < max(int(you_dg), int(en_dg)):
                 # добавляем верхний или нижний недостающий элемент
                 tmp.append("".join([char, str(num+1)]))
         else:
@@ -55,6 +55,34 @@ def find_enemy(you, dir, enemy):
 
         return set(tmp)
 
+
+
+    def dfs_paths(graph, start, goal):
+    # перебираем граф в поисках путей между точками
+        stack = [(start, [start])]
+        while stack:
+            (vertex, path) = stack.pop()
+            for next in graph[vertex] - set(path):
+                if next == goal:
+                    yield path + [next]
+                else:
+                    stack.append((next, path + [next]))
+
+    def bfs_paths(graph, start, goal):
+        queue = [(start, [start])]
+        while queue:
+            (vertex, path) = queue.pop(0)
+            for next in graph[vertex] - set(path):
+                if next == goal:
+                    yield path + [next]
+                else:
+                    queue.append((next, path + [next]))
+
+    def shortest_path(graph, start, goal):
+        try:
+            return next(bfs_paths(graph, start, goal))
+        except StopIteration:
+            return None
 
 
 
@@ -80,6 +108,13 @@ def find_enemy(you, dir, enemy):
 
 
     print(graph)
+
+    print("______________________")
+
+    # print(list(dfs_paths(graph, you, enemy)))
+
+
+    print(shortest_path(graph, you, enemy))
 
 
 
