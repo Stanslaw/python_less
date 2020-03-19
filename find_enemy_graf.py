@@ -53,16 +53,16 @@ def find_enemy(you, dir, enemy):
 
 
 
-    def dfs_paths(graph, start, goal):
+    # def dfs_paths(graph, start, goal):
     # перебираем граф в поисках путей между точками
-        stack = [(start, [start])]
-        while stack:
-            (vertex, path) = stack.pop()
-            for next in graph[vertex] - set(path):
-                if next == goal:
-                    yield path + [next]
-                else:
-                    stack.append((next, path + [next]))
+        # stack = [(start, [start])]
+        # while stack:
+        #     (vertex, path) = stack.pop()
+        #     for next in graph[vertex] - set(path):
+        #         if next == goal:
+        #             yield path + [next]
+        #         else:
+        #             stack.append((next, path + [next]))
 
     def bfs_paths(graph, start, goal):
         queue = [(start, [start])]
@@ -96,9 +96,9 @@ def find_enemy(you, dir, enemy):
     graph = {}
 
     for i in range(min(int(you_dg), int(en_dg)), max(int(you_dg), int(en_dg))+1): # перебираем строки - числа от минимального до максимального
-        print("DGT = ", i)
+        # print("DGT = ", i)
         for j in alphabet[min(idx_you_l, idx_en_l) : max(idx_you_l, idx_en_l)+1]: # столбцы
-            print("ALPHA = ", j)
+            # print("ALPHA = ", j)
             graph["".join([j, str(i)])] = graph_import(i, j)
             # print(j, i)
 
@@ -111,9 +111,13 @@ def find_enemy(you, dir, enemy):
 
     shortest_way = shortest_path(graph, you, enemy)
 
+    len_shortest_way = len(shortest_way) - 1 # длинна пути для вывода результата
+
     print(shortest_way)
     print(len(shortest_way) - 1)
 
+
+    # Дело за малым, определить в каком секторе от начальной точки стоит конечная
 
 
 
