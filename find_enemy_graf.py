@@ -1,3 +1,4 @@
+from math import atan, atan2, atanh, pi, degrees
 
 def find_enemy(you, dir, enemy):
 
@@ -117,11 +118,24 @@ def find_enemy(you, dir, enemy):
     print(len(shortest_way) - 1)
 
 
+
     # Дело за малым, определить в каком секторе от начальной точки стоит конечная
 
+    # Определяем координаты стартовой и конечной точки
+    you_axis = (int(you_dg), idx_you_l)
+    enemy_axis = (int(en_dg), idx_en_l)
 
+    # Вычисляем тангенс угла наклона прямой  чтобы найти угол между прямой и осью Х через архтангенс
+    arctg_cust = (enemy_axis[1] - you_axis[1]) / (enemy_axis[0] - you_axis[0])
+    angle_from_x_and_line = degrees(atan(arctg_cust))
 
-    pass
+    # arctg_cust2 = atan2(enemy_axis, you_axis)
+
+    # print(arctg_cust2)
+
+    print(you_axis, enemy_axis, arctg_cust, angle_from_x_and_line)
+
+    return 0
 
 
 if __name__ == '__main__':
@@ -131,8 +145,8 @@ if __name__ == '__main__':
     # assert find_enemy('G5', 'N', 'J6') == ['R', 3], "SE-3"
     # assert find_enemy('G5', 'N', 'G9') == ['B', 4], "S-4"
     # assert find_enemy('G5', 'N', 'B7') == ['L', 5], "SW-5"
-    assert find_enemy('G5', 'N', 'A2') == ['L', 6], "NW-6"
+    # assert find_enemy('G5', 'N', 'A2') == ['L', 6], "NW-6"
     # assert find_enemy('G3', 'NE', 'C5') == ['B', 4], "[watch your six!]"
     # assert find_enemy('H3', 'SW', 'E2') == ['R', 3], "right"
-    # assert find_enemy('A4', 'S', 'M4') == ['L', 12], "true left"
+    assert find_enemy('A4', 'S', 'M4') == ['L', 12], "true left"
     # print("You are good to go!")
