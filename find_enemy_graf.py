@@ -22,7 +22,9 @@ def find_enemy(you, dir, enemy):
         tmp = []
 
         # смотрим на центр и формируем буквы перебора
-        if char == alphabet[min(idx_you_l, idx_en_l)]:
+        if char == alphabet[min(idx_you_l, idx_en_l)] == alphabet[max(idx_you_l, idx_en_l)]:
+            char_zone = [char]
+        elif char == alphabet[min(idx_you_l, idx_en_l)]:
             char_zone = [char, alphabet[num_char(char)+1]]
         elif char == alphabet[max(idx_you_l, idx_en_l)]:
             char_zone = [alphabet[num_char(char) - 1], char]
@@ -41,6 +43,7 @@ def find_enemy(you, dir, enemy):
                 # добавляем верхний или нижний недостающий элемент
                 tmp.append("".join([char, str(num-1)]))
 
+        # print(dig_zone, char_zone)
 
         for num_i in dig_zone:
             for char_j in char_zone:
@@ -51,19 +54,6 @@ def find_enemy(you, dir, enemy):
         return set(tmp)
 
 
-
-
-
-    # def dfs_paths(graph, start, goal):
-    # перебираем граф в поисках путей между точками
-        # stack = [(start, [start])]
-        # while stack:
-        #     (vertex, path) = stack.pop()
-        #     for next in graph[vertex] - set(path):
-        #         if next == goal:
-        #             yield path + [next]
-        #         else:
-        #             stack.append((next, path + [next]))
 
     def bfs_paths(graph, start, goal):
         queue = [(start, [start])]
@@ -104,7 +94,7 @@ def find_enemy(you, dir, enemy):
             # print(j, i)
 
 
-    print(graph)
+    # print(graph)
 
     print("______________________")
 
@@ -126,20 +116,50 @@ def find_enemy(you, dir, enemy):
     enemy_axis = (int(en_dg), idx_en_l)
 
     # Вычисляем тангенс угла наклона прямой  чтобы найти угол между прямой и осью Х через архтангенс
-    arctg_cust = (enemy_axis[1] - you_axis[1]) / (enemy_axis[0] - you_axis[0])
-    angle_from_x_and_line = degrees(atan(arctg_cust))
 
-    # arctg_cust2 = atan2(enemy_axis, you_axis)
+    arctg_cust2 = degrees(atan2(enemy_axis[1] - you_axis[1], enemy_axis[0] - you_axis[0]))
 
-    # print(arctg_cust2)
+    print(arctg_cust2)
 
-    print(you_axis, enemy_axis, arctg_cust, angle_from_x_and_line)
+    # Поправочные коэффициенты для исходной направленности отличной от N
+    azimut = {"N":0, "NE":60, "SE":120, "S":180, "SW":240, "NW":300}
 
-    return 0
+    arctg_cust2 += azimut[dir]
+
+    # if arctg_cust2 > 180:
+    #     arctg_cust2 = 180 - (360 - arctg_cust2)
+
+
+    # Формируем правило перевода диаргаммы направленности
+
+    if -30 < arctg_cust2 < 30:
+        dirrect_enemy = "B"
+    elif 30 < arctg_cust2 < 150:
+        dirrect_enemy = "R"
+    elif 150 < arctg_cust2 <= 180 or -180 <= arctg_cust2 < -150:
+        dirrect_enemy = "F"
+    elif -150 < arctg_cust2 < -30:
+        dirrect_enemy = "L"
+    else:
+        print("ERROR, bad azimut", arctg_cust2)
+
+    print(dirrect_enemy)
+
+    # print(you_axis, enemy_axis, arctg_cust, angle_from_x_and_line)
+
+    # рисуем табличку для визуализации
+    # print("_____________")
+    # for i in range(1, 10):
+    #     tmp_alpha_visual = []
+    #     for j in alphabet:
+    #         tmp_alpha_visual.append("".join([j, str(i)]))
+    #     print(*tmp_alpha_visual)
+
+    return [dirrect_enemy, len_shortest_way]
 
 
 if __name__ == '__main__':
-    # assert find_enemy('B1', 'N', 'D4') == ['F', 1], "N-1"
+    # assert find_enemy('G5', 'N', 'F1') == ['F', 1], "N-1"
     # assert find_enemy('G5', 'N', 'G4') == ['F', 1], "N-1"
     # assert find_enemy('G5', 'N', 'I4') == ['R', 2], "NE-2"
     # assert find_enemy('G5', 'N', 'J6') == ['R', 3], "SE-3"
