@@ -1,4 +1,4 @@
-from math import atan, atan2, atanh, pi, degrees
+from math import atan2, degrees
 
 def find_enemy(you, dir, enemy):
 
@@ -94,12 +94,6 @@ def find_enemy(you, dir, enemy):
             # print(j, i)
 
 
-    # print(graph)
-
-    print("______________________")
-
-    # print(list(dfs_paths(graph, you, enemy)))
-
     shortest_way = shortest_path(graph, you, enemy)
 
     len_shortest_way = len(shortest_way) - 1 # длинна пути для вывода результата
@@ -130,10 +124,6 @@ def find_enemy(you, dir, enemy):
 
 
 
-    # if arctg_cust2 > 180:
-    #     arctg_cust2 = 180 - (360 - arctg_cust2)
-
-
     # Формируем правило перевода диаргаммы направленности
 
     if 0 <= arctg_cust2 < 30 or 330 < arctg_cust2 <= 360:
@@ -147,16 +137,6 @@ def find_enemy(you, dir, enemy):
     else:
         print("ERROR, bad azimut", arctg_cust2)
 
-    # if -30 < arctg_cust2 < 30:
-    #     dirrect_enemy = "B"
-    # elif 30 < arctg_cust2 < 150:
-    #     dirrect_enemy = "R"
-    # elif 150 < arctg_cust2 <= 180 or -180 <= arctg_cust2 < -150:
-    #     dirrect_enemy = "F"
-    # elif -150 < arctg_cust2 < -30:
-    #     dirrect_enemy = "L"
-    # else:
-    #     print("ERROR, bad azimut", arctg_cust2)
 
     print(dirrect_enemy)
 
@@ -174,14 +154,14 @@ def find_enemy(you, dir, enemy):
 
 
 if __name__ == '__main__':
-    # assert find_enemy('G5', 'N', 'F1') == ['F', 1], "N-1"
-    assert find_enemy('G5', 'N', 'G4') == ['F', 1], "N-1"
-    assert find_enemy('G5', 'N', 'I4') == ['R', 2], "NE-2"
-    assert find_enemy('G5', 'N', 'J6') == ['R', 3], "SE-3"
-    assert find_enemy('G5', 'N', 'G9') == ['B', 4], "S-4"
-    assert find_enemy('G5', 'N', 'B7') == ['L', 5], "SW-5"
-    assert find_enemy('G5', 'N', 'A2') == ['L', 6], "NW-6"
-    assert find_enemy('G3', 'NE', 'C5') == ['B', 4], "[watch your six!]"
-    assert find_enemy('H3', 'SW', 'E2') == ['R', 3], "right"
-    assert find_enemy('A4', 'S', 'M4') == ['L', 12], "true left"
+    assert find_enemy('A1', 'SW', 'M5') == ['F', 1], "N-1"
+    # assert find_enemy('G5', 'N', 'G4') == ['F', 1], "N-1"
+    # assert find_enemy('G5', 'N', 'I4') == ['R', 2], "NE-2"
+    # assert find_enemy('G5', 'N', 'J6') == ['R', 3], "SE-3"
+    # assert find_enemy('G5', 'N', 'G9') == ['B', 4], "S-4"
+    # assert find_enemy('G5', 'N', 'B7') == ['L', 5], "SW-5"
+    # assert find_enemy('G5', 'N', 'A2') == ['L', 6], "NW-6"
+    # assert find_enemy('G3', 'NE', 'C5') == ['B', 4], "[watch your six!]"
+    # assert find_enemy('H3', 'SW', 'E2') == ['R', 3], "right"
+    # assert find_enemy('A4', 'S', 'M4') == ['L', 12], "true left"
     print("You are good to go!")
