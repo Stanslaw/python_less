@@ -15,91 +15,58 @@ def find_enemy(you, dir, enemy):
                 return idx
 
 
-    def graph_import(num, char):
-        """"
-        Функция принимает координаты точки и возвращает set всех возможных соседей
-        """
-        tmp = []
-
-        # смотрим на центр и формируем буквы перебора
-        if char == alphabet[min(idx_you_l, idx_en_l)] == alphabet[max(idx_you_l, idx_en_l)]:
-            char_zone = [char]
-        elif char == alphabet[min(idx_you_l, idx_en_l)]:
-            char_zone = [char, alphabet[num_char(char)+1]]
-        elif char == alphabet[max(idx_you_l, idx_en_l)]:
-            char_zone = [alphabet[num_char(char) - 1], char]
-        else:
-            char_zone = [alphabet[num_char(char)-1], char, alphabet[num_char(char)+1]]
-
-        # выбираем правильные цифры для правого и левого столбцов в зависимости от четности
-        if num_char(char) % 2 == 0:
-            dig_zone = [num-1, num]
-            if num < max(int(you_dg), int(en_dg)):
-                # добавляем верхний или нижний недостающий элемент
-                tmp.append("".join([char, str(num+1)]))
-        else:
-            dig_zone = [num, num+1]
-            if num > min(int(you_dg), int(en_dg)):
-                # добавляем верхний или нижний недостающий элемент
-                tmp.append("".join([char, str(num-1)]))
-
-        # print(dig_zone, char_zone)
-
-        for num_i in dig_zone:
-            for char_j in char_zone:
-                # записываем только те данные которые имеют неотрицательный префикс и префикс не выходящий за максимальный
-                if (max(int(you_dg), int(en_dg)) >= num_i >= min(int(you_dg), int(en_dg))) and [num_i, char_j] != [num, char]:
-                    tmp.append("".join([char_j, str(num_i)]))
-
-        return set(tmp)
-
-
-
-    def bfs_paths(graph, start, goal):
-        queue = [(start, [start])]
-        while queue:
-            (vertex, path) = queue.pop(0)
-            for next in graph[vertex] - set(path):
-                if next == goal:
-                    yield path + [next]
-                else:
-                    queue.append((next, path + [next]))
-
-    def shortest_path(graph, start, goal):
-        try:
-            return next(bfs_paths(graph, start, goal))
-        except StopIteration:
-            return None
-
-
-
-
-
     alphabet = "abcdefghijklmnopqrstuvwxyz"
     alphabet = alphabet.upper()
 
     you_l, you_dg = you[0], you[1]
     en_l, en_dg = enemy[0], enemy[1]
 
+    # print(type(you_dg))
+
     idx_you_l = num_char(you_l)
     idx_en_l = num_char(en_l)
 
-    graph = {}
+    tmp_len_shortest_way = 0
+    you_l_2 = you_l + ""
+    you_dg_2 = int(you_dg) + 0
+    en_l_2 = en_l + ""
+    en_dg_2 = int(en_dg) + 0
 
-    for i in range(min(int(you_dg), int(en_dg)), max(int(you_dg), int(en_dg))+1): # перебираем строки - числа от минимального до максимального
-        # print("DGT = ", i)
-        for j in alphabet[min(idx_you_l, idx_en_l) : max(idx_you_l, idx_en_l)+1]: # столбцы
-            # print("ALPHA = ", j)
-            graph["".join([j, str(i)])] = graph_import(i, j)
-            # print(j, i)
+    while you_l_2 != en_l_2 and you_dg_2 != en_dg_2:
 
+        if num_char(you_l_2) < num_char(en_l_2) and you_dg_2 < en_dg_2: # слева вверх в право вниз
+            tmp_len_shortest_way += 1
+            if num_char(you_l_2) % 2:
+               you_dg_2 += 1
+            you_l_2 = alphabet[num_char(you_l_2)+1]
+            # print(tmp_len_shortest_way, you_l_2, you_dg_2)
 
-    shortest_way = shortest_path(graph, you, enemy)
+        elif num_char(you_l_2)<num_char(en_l_2) and you_dg_2>en_dg_2: # слева низ в право вверх
+            tmp_len_shortest_way += 1
+            if num_char(you_l_2) % 2:
+                you_dg_2 -= 1
+            you_l_2 = alphabet[num_char(you_l_2) + 1]
 
-    len_shortest_way = len(shortest_way) - 1 # длинна пути для вывода результата
+        elif num_char(you_l_2)>num_char(en_l_2) and you_dg_2<en_dg_2: # справа вверх в лево вниз
+            tmp_len_shortest_way += 1
+            if num_char(you_l_2) % 2:
+                you_dg_2 += 1
+            you_l_2 = alphabet[num_char(you_l_2) - 1]
 
-    print(shortest_way)
-    print(len(shortest_way) - 1)
+        elif num_char(you_l_2)>num_char(en_l_2) and you_dg_2>en_dg_2: # справа низ в лево вверх
+            tmp_len_shortest_way += 1
+            if num_char(you_l_2) % 2:
+                you_dg_2 -= 1
+            you_l_2 = alphabet[num_char(you_l_2) - 1]
+
+    # print("End of while")
+    # print(you_l, you_dg)
+    # print(en_l, en_dg)
+
+    if you_l_2 == en_l_2:
+        len_shortest_way = abs(you_dg_2 - en_dg_2) + tmp_len_shortest_way
+    elif you_dg_2 == en_dg_2:
+        len_shortest_way = abs(num_char(you_l_2) - num_char(en_l_2)) + tmp_len_shortest_way
 
 
 
@@ -154,14 +121,14 @@ def find_enemy(you, dir, enemy):
 
 
 if __name__ == '__main__':
-    assert find_enemy('A1', 'SW', 'M5') == ['F', 1], "N-1"
-    # assert find_enemy('G5', 'N', 'G4') == ['F', 1], "N-1"
-    # assert find_enemy('G5', 'N', 'I4') == ['R', 2], "NE-2"
-    # assert find_enemy('G5', 'N', 'J6') == ['R', 3], "SE-3"
-    # assert find_enemy('G5', 'N', 'G9') == ['B', 4], "S-4"
-    # assert find_enemy('G5', 'N', 'B7') == ['L', 5], "SW-5"
-    # assert find_enemy('G5', 'N', 'A2') == ['L', 6], "NW-6"
-    # assert find_enemy('G3', 'NE', 'C5') == ['B', 4], "[watch your six!]"
-    # assert find_enemy('H3', 'SW', 'E2') == ['R', 3], "right"
-    # assert find_enemy('A4', 'S', 'M4') == ['L', 12], "true left"
+    # assert find_enemy('A1', 'SW', 'J9') == ['F', 1], "N-1"
+    assert find_enemy('G5', 'N', 'G4') == ['F', 1], "N-1"
+    assert find_enemy('G5', 'N', 'I4') == ['R', 2], "NE-2"
+    assert find_enemy('G5', 'N', 'J6') == ['R', 3], "SE-3"
+    assert find_enemy('G5', 'N', 'G9') == ['B', 4], "S-4"
+    assert find_enemy('G5', 'N', 'B7') == ['L', 5], "SW-5"
+    assert find_enemy('G5', 'N', 'A2') == ['L', 6], "NW-6"
+    assert find_enemy('G3', 'NE', 'C5') == ['B', 4], "[watch your six!]"
+    assert find_enemy('H3', 'SW', 'E2') == ['R', 3], "right"
+    assert find_enemy('A4', 'S', 'M4') == ['L', 12], "true left"
     print("You are good to go!")
