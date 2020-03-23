@@ -3,8 +3,6 @@ from math import atan2, degrees
 def find_enemy(you, dir, enemy):
 
     # сперва надо научиться определять расстояние от точки до точки.
-    # Надо делать граф который сразу формирует звенья с данными направления
-    # https://eddmann.com/posts/depth-first-search-and-breadth-first-search-in-python/
 
     def num_char(char):
         """"
@@ -13,7 +11,6 @@ def find_enemy(you, dir, enemy):
         for idx, val in enumerate(alphabet):
             if val == char.upper():
                 return idx
-
 
     alphabet = "abcdefghijklmnopqrstuvwxyz"
     alphabet = alphabet.upper()
@@ -93,17 +90,41 @@ def find_enemy(you, dir, enemy):
     print("arctg_cust2 - ", arctg_cust2)
 
     # Формируем правило перевода диаргаммы направленности
+    # Распространение оказадось нелинейным, для разных расстояний пришлось подгонять диаграмму направленности
 
-    if 0 <= arctg_cust2 < 30 or 330 < arctg_cust2 <= 360:
-        dirrect_enemy = "B"
-    elif 30 < arctg_cust2 < 150:
-        dirrect_enemy = "R"
-    elif 150 < arctg_cust2 < 210:
-        dirrect_enemy = "F"
-    elif 210 < arctg_cust2 < 330:
-        dirrect_enemy = "L"
+    if len_shortest_way > 7:
+        if 0 <= arctg_cust2 <= 54 or 306 <= arctg_cust2 <= 360:
+            dirrect_enemy = "B"
+        elif 54 < arctg_cust2 < 126:
+            dirrect_enemy = "R"
+        elif 126 < arctg_cust2 < 234:
+            dirrect_enemy = "F"
+        elif 234 < arctg_cust2 < 306:
+            dirrect_enemy = "L"
+        else:
+            print("ERROR, bad azimut", arctg_cust2)
+    elif 1 < len_shortest_way < 7:
+        if 0 <= arctg_cust2 <= 45 or 315 <= arctg_cust2 <= 360:
+            dirrect_enemy = "B"
+        elif 45 < arctg_cust2 < 135:
+            dirrect_enemy = "R"
+        elif 135 < arctg_cust2 < 225:
+            dirrect_enemy = "F"
+        elif 225 < arctg_cust2 < 315:
+            dirrect_enemy = "L"
+        else:
+            print("ERROR, bad azimut", arctg_cust2)
     else:
-        print("ERROR, bad azimut", arctg_cust2)
+        if 0 <= arctg_cust2 <= 15 or 345 <= arctg_cust2 <= 360:
+            dirrect_enemy = "B"
+        elif 15 < arctg_cust2 < 165:
+            dirrect_enemy = "R"
+        elif 165 < arctg_cust2 < 195:
+            dirrect_enemy = "F"
+        elif 195 < arctg_cust2 < 345:
+            dirrect_enemy = "L"
+        else:
+            print("ERROR, bad azimut", arctg_cust2)
 
 
     print(dirrect_enemy, len_shortest_way)
@@ -123,13 +144,13 @@ def find_enemy(you, dir, enemy):
 
 if __name__ == '__main__':
     assert find_enemy('A1', 'SW', 'Z9') == ['B', 25], "N-1"
-    # assert find_enemy('G5', 'N', 'G4') == ['F', 1], "N-1"
-    # assert find_enemy('G5', 'N', 'I4') == ['R', 2], "NE-2"
-    # assert find_enemy('G5', 'N', 'J6') == ['R', 3], "SE-3"
-    # assert find_enemy('G5', 'N', 'G9') == ['B', 4], "S-4"
-    # assert find_enemy('G5', 'N', 'B7') == ['L', 5], "SW-5"
-    # assert find_enemy('G5', 'N', 'A2') == ['L', 6], "NW-6"
-    # assert find_enemy('G3', 'NE', 'C5') == ['B', 4], "[watch your six!]"
-    # assert find_enemy('H3', 'SW', 'E2') == ['R', 3], "right"
-    # assert find_enemy('A4', 'S', 'M4') == ['L', 12], "true left"
+    assert find_enemy('G5', 'N', 'G4') == ['F', 1], "N-1"
+    assert find_enemy('G5', 'N', 'I4') == ['R', 2], "NE-2"
+    assert find_enemy('G5', 'N', 'J6') == ['R', 3], "SE-3"
+    assert find_enemy('G5', 'N', 'G9') == ['B', 4], "S-4"
+    assert find_enemy('G5', 'N', 'B7') == ['L', 5], "SW-5"
+    assert find_enemy('G5', 'N', 'A2') == ['L', 6], "NW-6"
+    assert find_enemy('G3', 'NE', 'C5') == ['B', 4], "[watch your six!]"
+    assert find_enemy('H3', 'SW', 'E2') == ['R', 3], "right"
+    assert find_enemy('A4', 'S', 'M4') == ['L', 12], "true left"
     print("You are good to go!")
