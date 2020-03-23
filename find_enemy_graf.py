@@ -43,7 +43,7 @@ def find_enemy(you, dir, enemy):
 
         elif num_char(you_l_2)<num_char(en_l_2) and you_dg_2>en_dg_2: # слева низ в право вверх
             tmp_len_shortest_way += 1
-            if num_char(you_l_2) % 2:
+            if not num_char(you_l_2) % 2:
                 you_dg_2 -= 1
             you_l_2 = alphabet[num_char(you_l_2) + 1]
 
@@ -55,11 +55,12 @@ def find_enemy(you, dir, enemy):
 
         elif num_char(you_l_2)>num_char(en_l_2) and you_dg_2>en_dg_2: # справа низ в лево вверх
             tmp_len_shortest_way += 1
-            if num_char(you_l_2) % 2:
+            if not num_char(you_l_2) % 2:
                 you_dg_2 -= 1
             you_l_2 = alphabet[num_char(you_l_2) - 1]
+            # print(tmp_len_shortest_way, you_l_2, you_dg_2)
 
-    # print("End of while")
+    print("End of while")
     # print(you_l, you_dg)
     # print(en_l, en_dg)
 
@@ -83,13 +84,13 @@ def find_enemy(you, dir, enemy):
     if arctg_cust2 < 0:
         arctg_cust2 += 360
 
-    print(arctg_cust2)
+    print("arctg_cust2 - ", arctg_cust2)
 
     # Поправочные коэффициенты для исходной направленности отличной от N
     azimut = {"N":0, "NE":60, "SE":120, "S":180, "SW":240, "NW":300}
     arctg_cust2 = (arctg_cust2 + azimut[dir]) % 360
 
-
+    print("arctg_cust2 - ", arctg_cust2)
 
     # Формируем правило перевода диаргаммы направленности
 
@@ -105,7 +106,7 @@ def find_enemy(you, dir, enemy):
         print("ERROR, bad azimut", arctg_cust2)
 
 
-    print(dirrect_enemy)
+    print(dirrect_enemy, len_shortest_way)
 
     # print(you_axis, enemy_axis, arctg_cust, angle_from_x_and_line)
 
@@ -121,14 +122,14 @@ def find_enemy(you, dir, enemy):
 
 
 if __name__ == '__main__':
-    # assert find_enemy('A1', 'SW', 'J9') == ['F', 1], "N-1"
-    assert find_enemy('G5', 'N', 'G4') == ['F', 1], "N-1"
-    assert find_enemy('G5', 'N', 'I4') == ['R', 2], "NE-2"
-    assert find_enemy('G5', 'N', 'J6') == ['R', 3], "SE-3"
-    assert find_enemy('G5', 'N', 'G9') == ['B', 4], "S-4"
-    assert find_enemy('G5', 'N', 'B7') == ['L', 5], "SW-5"
-    assert find_enemy('G5', 'N', 'A2') == ['L', 6], "NW-6"
-    assert find_enemy('G3', 'NE', 'C5') == ['B', 4], "[watch your six!]"
-    assert find_enemy('H3', 'SW', 'E2') == ['R', 3], "right"
-    assert find_enemy('A4', 'S', 'M4') == ['L', 12], "true left"
+    assert find_enemy('A1', 'SW', 'Z9') == ['B', 25], "N-1"
+    # assert find_enemy('G5', 'N', 'G4') == ['F', 1], "N-1"
+    # assert find_enemy('G5', 'N', 'I4') == ['R', 2], "NE-2"
+    # assert find_enemy('G5', 'N', 'J6') == ['R', 3], "SE-3"
+    # assert find_enemy('G5', 'N', 'G9') == ['B', 4], "S-4"
+    # assert find_enemy('G5', 'N', 'B7') == ['L', 5], "SW-5"
+    # assert find_enemy('G5', 'N', 'A2') == ['L', 6], "NW-6"
+    # assert find_enemy('G3', 'NE', 'C5') == ['B', 4], "[watch your six!]"
+    # assert find_enemy('H3', 'SW', 'E2') == ['R', 3], "right"
+    # assert find_enemy('A4', 'S', 'M4') == ['L', 12], "true left"
     print("You are good to go!")
