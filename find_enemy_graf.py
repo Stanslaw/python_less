@@ -2,7 +2,7 @@ from math import atan2, degrees
 
 def find_enemy(you, dir, enemy):
 
-    # сперва надо научиться определять расстояние от точки до точки222.
+    # сперва надо научиться определять расстояние от точки до точки.
 
     def num_char(char):
         """"
@@ -57,7 +57,7 @@ def find_enemy(you, dir, enemy):
             you_l_2 = alphabet[num_char(you_l_2) - 1]
             # print(tmp_len_shortest_way, you_l_2, you_dg_2)
 
-    print("End of while")
+    # print("End of while")
     # print(you_l, you_dg)
     # print(en_l, en_dg)
 
@@ -81,13 +81,13 @@ def find_enemy(you, dir, enemy):
     if arctg_cust2 < 0:
         arctg_cust2 += 360
 
-    print("arctg_cust2 - ", arctg_cust2)
+    # print("arctg_cust2 - ", arctg_cust2)
 
     # Поправочные коэффициенты для исходной направленности отличной от N
     azimut = {"N":0, "NE":60, "SE":120, "S":180, "SW":240, "NW":300}
     arctg_cust2 = (arctg_cust2 + azimut[dir]) % 360
 
-    print("arctg_cust2 - ", arctg_cust2)
+    # print("arctg_cust2 - ", arctg_cust2)
 
     # Формируем правило перевода диаргаммы направленности
     # Распространение оказадось нелинейным, для разных расстояний пришлось подгонять диаграмму направленности
@@ -129,15 +129,6 @@ def find_enemy(you, dir, enemy):
 
     print(dirrect_enemy, len_shortest_way)
 
-    # print(you_axis, enemy_axis, arctg_cust, angle_from_x_and_line)
-
-    # рисуем табличку для визуализации
-    # print("_____________")
-    # for i in range(1, 10):
-    #     tmp_alpha_visual = []
-    #     for j in alphabet:
-    #         tmp_alpha_visual.append("".join([j, str(i)]))
-    #     print(*tmp_alpha_visual)
 
     return [dirrect_enemy, len_shortest_way]
 
