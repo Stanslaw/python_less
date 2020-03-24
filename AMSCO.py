@@ -15,6 +15,18 @@ def decode_amsco(message, key):
 
         return 0
 
+    def strok_gen(lit):
+        """
+        Функция принимает количество символов и выдает очередную порцию
+        """
+        if lit == 1:
+            return message_mass.pop(0)
+        else:
+            return message_mass.pop(0)+message_mass.pop(0)
+
+
+        return 0
+
     # надо определить сколько у таблицы строк
 
     len_message = len(message)
@@ -64,17 +76,38 @@ def decode_amsco(message, key):
 
     # Переписываем матрицу в связи со сформированными правилами
 
+    # переводим строку в массив чтобы было проще оперировать данными
+    message_mass = []
+    for i in message:
+        message_mass.append(i)
+    print(message_mass)
+
     for col in range(len_key):
         # нужна функия считающая количество строк в столбце
         for row in range(size_rows(secret_matrix, slovar_key[col])):
-            pass
+            print("ROW, COL - ", row, slovar_key[col])
+            secret_matrix[row][slovar_key[col]][0] = strok_gen(secret_matrix[row][slovar_key[col]][1])
 
-    # size_rows(secret_matrix, slovar_key[2])
+    for i in secret_matrix:
+        print(i)
 
+
+
+    # Теперь надо вывести сообщение
+    message = ""
+    for row in range(size_rows(secret_matrix, 0)):
+        for col in range(len_key):
+            try:
+                message += secret_matrix[row][col][0]
+            except IndexError:
+                print(message)
+                return message
+
+    print(message)
     return message
 
 if __name__ == '__main__':
     #These "asserts" using only for self-checking and not necessary for auto-testing
-    assert decode_amsco("oruoreemdstmioitlpslam", 4123) == "loremipsumdolorsitamet", "Lorem Ipsum"
+    # assert decode_amsco("oruoreemdstmioitlpslam", 4123) == "loremipsumdolorsitamet", "Lorem Ipsum"
     # assert decode_amsco('kicheco', 23415) == "checkio", "Checkio"
-    # assert decode_amsco('hrewhoorrowyilmmmoaouletow', 123) == "howareyouwillhometommorrow", "How are you"
+    assert decode_amsco('hrewhoorrowyilmmmoaouletow', 123) == "howareyouwillhometommorrow", "How are you"
