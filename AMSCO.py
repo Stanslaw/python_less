@@ -10,7 +10,7 @@ def decode_amsco(message, key):
                 matrix[row][col]
                 row += 1
             except IndexError:
-                print("row - ", row)
+                # print("row - ", row)
                 return row
 
         return 0
@@ -31,15 +31,15 @@ def decode_amsco(message, key):
 
     len_message = len(message)
     len_key = len(str(key))
-    print("len_message = ", len_message)
-    print("len_key = ", len_key)
+    # print("len_message = ", len_message)
+    # print("len_key = ", len_key)
 
     # делаем соотношение столбцов и ключей
     slovar_key = {}
     for idx_c, val in enumerate(str(key)):
         slovar_key[int(val) - 1] = idx_c
 
-    print(slovar_key)
+    # print(slovar_key)
 
     # переводим строку в массив чтобы было проще оперировать данными
     message_mass = []
@@ -47,10 +47,13 @@ def decode_amsco(message, key):
         message_mass.append(i)
 
     # Грузим матрицу как есть чтобы понять сколько строк получается и где по одному символу а где по 2 должно быть
-    idx = True
+
     secret_matrix = []
     while len_message > 1:
-        idx = not idx
+        if secret_matrix == [] or secret_matrix[-1][0][1] == 2:
+            idx = False
+        else:
+            idx = True
         tmp_secret_matrix = []
         for i in str(key):
             if len_message > 1:
@@ -69,8 +72,8 @@ def decode_amsco(message, key):
     if message_mass:
         secret_matrix[-1].append([*message_mass, len(message_mass)])
 
-    for i in secret_matrix: # мартица правильной размерности
-        print(i)
+    # for i in secret_matrix: # мартица правильной размерности
+    #     print(i)
 
 
 
@@ -80,16 +83,16 @@ def decode_amsco(message, key):
     message_mass = []
     for i in message:
         message_mass.append(i)
-    print(message_mass)
+    # print(message_mass)
 
     for col in range(len_key):
         # нужна функия считающая количество строк в столбце
         for row in range(size_rows(secret_matrix, slovar_key[col])):
-            print("ROW, COL - ", row, slovar_key[col])
+            # print("ROW, COL - ", row, slovar_key[col])
             secret_matrix[row][slovar_key[col]][0] = strok_gen(secret_matrix[row][slovar_key[col]][1])
 
-    for i in secret_matrix:
-        print(i)
+    # for i in secret_matrix:
+    #     print(i)
 
 
 
@@ -108,6 +111,6 @@ def decode_amsco(message, key):
 
 if __name__ == '__main__':
     #These "asserts" using only for self-checking and not necessary for auto-testing
-    # assert decode_amsco("oruoreemdstmioitlpslam", 4123) == "loremipsumdolorsitamet", "Lorem Ipsum"
-    # assert decode_amsco('kicheco', 23415) == "checkio", "Checkio"
+    assert decode_amsco("oruoreemdstmioitlpslam", 4123) == "loremipsumdolorsitamet", "Lorem Ipsum"
+    assert decode_amsco('kicheco', 23415) == "checkio", "Checkio"
     assert decode_amsco('hrewhoorrowyilmmmoaouletow', 123) == "howareyouwillhometommorrow", "How are you"
