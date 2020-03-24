@@ -31,15 +31,15 @@ def decode_amsco(message, key):
 
     len_message = len(message)
     len_key = len(str(key))
-    # print("len_message = ", len_message)
-    # print("len_key = ", len_key)
+    print("len_message = ", len_message)
+    print("len_key = ", len_key)
 
     # делаем соотношение столбцов и ключей
     slovar_key = {}
     for idx_c, val in enumerate(str(key)):
         slovar_key[int(val) - 1] = idx_c
 
-    # print(slovar_key)
+    print(slovar_key)
 
     # переводим строку в массив чтобы было проще оперировать данными
     message_mass = []
@@ -70,10 +70,13 @@ def decode_amsco(message, key):
 
     # Добавляем в матрицу последний элемент 1 или 2 символа, если лист вустой - ничего не добавляем
     if message_mass:
-        secret_matrix[-1].append([*message_mass, len(message_mass)])
+        if len(secret_matrix[-1]) == len_key:
+            secret_matrix.append([[*message_mass, len(message_mass)]])
+        else:
+            secret_matrix[-1].append([*message_mass, len(message_mass)])
 
-    # for i in secret_matrix: # мартица правильной размерности
-    #     print(i)
+    for i in secret_matrix: # мартица правильной размерности
+        print(i)
 
 
 
@@ -83,7 +86,7 @@ def decode_amsco(message, key):
     message_mass = []
     for i in message:
         message_mass.append(i)
-    # print(message_mass)
+    print(message_mass)
 
     for col in range(len_key):
         # нужна функия считающая количество строк в столбце
@@ -91,8 +94,8 @@ def decode_amsco(message, key):
             # print("ROW, COL - ", row, slovar_key[col])
             secret_matrix[row][slovar_key[col]][0] = strok_gen(secret_matrix[row][slovar_key[col]][1])
 
-    # for i in secret_matrix:
-    #     print(i)
+    for i in secret_matrix:
+        print(i)
 
 
 
@@ -111,6 +114,7 @@ def decode_amsco(message, key):
 
 if __name__ == '__main__':
     #These "asserts" using only for self-checking and not necessary for auto-testing
-    assert decode_amsco("oruoreemdstmioitlpslam", 4123) == "loremipsumdolorsitamet", "Lorem Ipsum"
-    assert decode_amsco('kicheco', 23415) == "checkio", "Checkio"
-    assert decode_amsco('hrewhoorrowyilmmmoaouletow', 123) == "howareyouwillhometommorrow", "How are you"
+    assert decode_amsco("nsehnpienuhetgsnietleaanhofnisirersssneaeadrbeitoraxetgtaseilwigkeromyltvgrrannheveevronrinstreopblgreutrminnctrentssoiriesrfshjoyealfehxiipowteefskamyfradiqseequtatcenucafgasttentiatwatsowiovlswondhiareurthefofsafygtotrarafuiakefmekewnipicywhronearsnttasdbloemsmyibsnuinreienitmtldpdrstrhntafeiasettwleeeyiurmemnikpfaetrlmynewleahsayderasoontllsmoogwnhmhmadececeschatholiipprsoeexefmnishlelhoneonleaeseetheretinwhlalmapudtdsthsufeneeoetaasstneuwoltyessysoteenrihwiotieltmtehwhcfoiuliohdenothssetlecneysibabainoepmndenearahhetlytthaeaesuepecimaiatdbsealein", 35142) == "awonderfulserenityhastakenpossessionofmyentiresoullikethesesweetmorningsofspringwhichienjoywithmywholeheartiamaloneandfeelthecharmofexistenceinthisspotwhichwascreatedfortheblissofsoulslikemineiamsohappymydearfriendsoabsorbedintheexquisitesenseofmeretranquilexistencethatineglectmytalentsishouldbeincapableofdrawingasinglestrokeatthepresentmomentandyetifeelthatineverwasagreaterartistthannowwhenwhilethelovelyvalleyteemswithvapouraroundmeandthemeridiansunstrikestheuppersurfaceoftheimpenetrablefoliageofmytreesandbutafewstraygleamsstealintotheinnersanctuary", "Lorem Ipsum"
+    # assert decode_amsco("oruoreemdstmioitlpslam", 4123) == "loremipsumdolorsitamet", "Lorem Ipsum"
+    # assert decode_amsco('kicheco', 23415) == "checkio", "Checkio"
+    # assert decode_amsco('hrewhoorrowyilmmmoaouletow', 123) == "howareyouwillhometommorrow", "How are you"
