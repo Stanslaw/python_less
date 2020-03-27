@@ -1,15 +1,13 @@
-from urllib.request import urlopen
-import re
+from urllib.request import urlopen, urlretrieve
+from bs4 import BeautifulSoup
 
-html = urlopen('https://ru.wikipedia.org/wiki/Python').read().decode('utf-8')
-
-s = str(html)
-
-pos = s.find('<a href=')
-# print(pos)
-while pos != -1:
-    posquote = s.find('"', pos + 9)
-    href = s[pos + 9:posquote]
-    print(href)
-    pos = s.find('<a href=', pos + 1)
-    # print(pos)
+resp = urlopen('https://stepik.org/media/attachments/lesson/245130/6.html') # скачиваем файл
+html = resp.read().decode('utf8') # считываем содержимое
+soup = BeautifulSoup(html, 'html.parser') # делаем суп
+table = soup.find('table', attrs = {'class' : 'wikitable sortable'})
+cnt = 0
+for tr in soup.find_all('tr'):
+    cnt += 1
+    for td in tr.find_all(['td', 'th']):
+        cnt *= 2
+print(cnt)
