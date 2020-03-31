@@ -15,10 +15,7 @@ def except_zero(items: list) -> Iterable:
 
     ex_zeros = sorted(ex_zeros)
 
-    print("zeros = ", zeros)
-
-    # if zeros == []:
-    #     return ex_zeros
+    # print("zeros = ", zeros)
 
     res = []
     n = 0
