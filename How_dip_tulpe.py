@@ -13,7 +13,7 @@ def how_deep(structure):
             max_n = n
     print(structure)
     print(max_n)
-    return max_
+    return max_n
 
 
 if __name__ == '__main__':
