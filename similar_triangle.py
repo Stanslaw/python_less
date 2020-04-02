@@ -19,11 +19,21 @@ def similar_triangles(coords_1: Coords, coords_2: Coords) -> bool:
         Вычисляем стороны треугодьника, на вход координаты, а выходе - стороны
         """
 
-        AB = sqrt((coor[0][0] - coor[1][0])**2 + (coor[0][1] - coor[1][1])**2)
+        # делаем сноску в воложительную область
+        new_coor = []
+        for i in coor:
+            new_coor.append((i[0] + 20, i[1] + 20))
+
+        coor = new_coor
+
+        print(coor)
+
+        AB = sqrt((coor[0][0] - coor[1][0]) ** 2 + (coor[0][1] - coor[1][1]) ** 2)
         AC = sqrt((coor[0][0] - coor[2][0]) ** 2 + (coor[0][1] - coor[2][1]) ** 2)
         BC = sqrt((coor[1][0] - coor[2][0]) ** 2 + (coor[1][1] - coor[2][1]) ** 2)
 
         return sorted([AB, AC, BC])
+
 
 
     x = len_triangle(coords_1)
@@ -31,10 +41,10 @@ def similar_triangles(coords_1: Coords, coords_2: Coords) -> bool:
 
     print(x)
     print(y)
-    print(x[0]/y[0])
+    print(round(x[0]/y[0], 6), round(x[1]/y[1], 6), round(x[2]/y[2], 6))
 
 
-    if x[0]/y[0] == x[1]/y[1] == x[2]/y[2]:
+    if round(x[0]/y[0], 6) == round(x[1]/y[1], 6) == round(x[2]/y[2], 6):
         return True
     else:
         return False
@@ -47,7 +57,7 @@ if __name__ == '__main__':
     # print(similar_triangles([(0, 0), (1, 2), (2, 0)], [(3, 0), (4, 2), (5, 0)]))
 
     # These "asserts" are used for self-checking and not for an auto-testing
-    assert similar_triangles([(-2,-4), (-1,2),(2,1)],[(8,2),(-7,-10),(-10,-10)]) is True, 'basic'
+    assert similar_triangles([(-2, -4), (-1, 2),(2, 1)],[(8, 2),(-7, -10),(-10, -1)]) is True, 'basic'
     #
     assert similar_triangles([(0, 0), (1, 2), (2, 0)], [(3, 0), (4, 2), (5, 0)]) is True, 'basic'
     assert similar_triangles([(0, 0), (1, 2), (2, 0)], [(3, 0), (4, 3), (5, 0)]) is False, 'different #1'
