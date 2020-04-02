@@ -1,3 +1,4 @@
+from math import sqrt
 from typing import List, Tuple
 Coords = List[Tuple[int, int]]
 
@@ -9,49 +10,36 @@ def similar_triangles(coords_1: Coords, coords_2: Coords) -> bool:
     # print(coords_1)
     # print(coords_2)
 
-    # Для решения задачи необходимо найти углы треугольников
-    # Если углы ровны значит треугольники подобны
 
-    def corners_of_triangle(tulp):
+    # Сначала определяем длинны сторон треугольника ABC, если коэффициент подобия ко всем сторонам одинаков -
+    # треугольники подобны
 
-        # чтобы устранить деление на ноль перенесем все координаты на 20
-        new_tulp = []
-        for i in tulp:
-            new_tulp.append((i[0]+20, i[1] + 20))
+    def len_triangle(coor):
+        """
+        Вычисляем стороны треугодьника, на вход координаты, а выходе - стороны
+        """
 
-        tulp = new_tulp
+        AB = sqrt((coor[0][0] - coor[1][0])**2 + (coor[0][1] - coor[1][1])**2)
+        AC = sqrt((coor[0][0] - coor[2][0]) ** 2 + (coor[0][1] - coor[2][1]) ** 2)
+        BC = sqrt((coor[1][0] - coor[2][0]) ** 2 + (coor[1][1] - coor[2][1]) ** 2)
 
-        print(tulp)
-
-        KAB = (tulp[1][1] - tulp[0][1]) / (tulp[1][0] - tulp[0][0])
-        KBC = (tulp[2][1] - tulp[1][1]) / (tulp[2][0] - tulp[1][0])
-        KCA = (tulp[0][1] - tulp[2][1]) / (tulp[0][0] - tulp[2][0])
-
-        # print("KAB = ", KAB)
-        # print("KBC = ", KBC)
-        # print("KCA = ", KCA)
-
-        TG_A = (KAB -KCA) / (1+KAB*KCA)
-        TG_B = (KBC - KAB) / (1 + KBC * KAB)
-        TG_C = (KBC - KCA) / (1 + KBC * KCA)
-
-        # print("TG_A = ", TG_A)
-        # print("TG_B = ", TG_B)
-        # print("TG_C = ", TG_C)
-
-        angles = sorted([TG_A, TG_B, TG_C])
-
-        print(angles)
-
-        return angles
+        return sorted([AB, AC, BC])
 
 
-    # Проверяем на равенство тангенсы углов, если равны - возвращаем True
+    x = len_triangle(coords_1)
+    y = len_triangle(coords_2)
 
-    if corners_of_triangle(coords_1) == corners_of_triangle(coords_2):
+    print(x)
+    print(y)
+    # print(k)
+
+
+    if x[0]/y[0] == x[1]/y[1] == x[2]/y[2]:
         return True
     else:
         return False
+
+
 
 
 if __name__ == '__main__':
@@ -59,10 +47,12 @@ if __name__ == '__main__':
     # print(similar_triangles([(0, 0), (1, 2), (2, 0)], [(3, 0), (4, 2), (5, 0)]))
 
     # These "asserts" are used for self-checking and not for an auto-testing
+    assert similar_triangels([[-2,-4],[-1,2],[2,1]],[[8,2],[-7,-10],[-10,-1]]) is True, 'basic'
+
     assert similar_triangles([(0, 0), (1, 2), (2, 0)], [(3, 0), (4, 2), (5, 0)]) is True, 'basic'
     assert similar_triangles([(0, 0), (1, 2), (2, 0)], [(3, 0), (4, 3), (5, 0)]) is False, 'different #1'
     assert similar_triangles([(0, 0), (1, 2), (2, 0)], [(2, 0), (4, 4), (6, 0)]) is True, 'scaling'
     assert similar_triangles([(0, 0), (0, 3), (2, 0)], [(3, 0), (5, 3), (5, 0)]) is True, 'reflection'
     assert similar_triangles([(1, 0), (1, 2), (2, 0)], [(3, 0), (5, 4), (5, 0)]) is True, 'scaling and reflection'
     assert similar_triangles([(1, 0), (1, 3), (2, 0)], [(3, 0), (5, 5), (5, 0)]) is False, 'different #2'
-
+    print("Coding complete? Click 'Check' to earn cool rewards!")
