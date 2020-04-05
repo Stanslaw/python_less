@@ -11,6 +11,10 @@ def is_inside(polygon, point):
     if point in polygon:
         return True
 
+    # точка лежит на отрезке.
+    def point_on_the_line (line, point):
+        return 0
+
 
 
 
