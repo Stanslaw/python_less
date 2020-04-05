@@ -28,7 +28,6 @@ def is_inside(polygon, point):
         return sp
 
     def point_on_the_line(line, point):
-
         """
         Функция получает на вход координаты двух точек отрезка и точку проверки. Если точка лежит на отрезке
         возвращаем True в противном случае False
@@ -60,22 +59,29 @@ def is_inside(polygon, point):
         return True
 
 
-    # Первым делом надо задать уравнения луча который проходит только через ребра фигуры
+    # Задаем уравнения луча который проходит только через ребра фигуры
     # то есть уравнение прямой на которой нет ни одной вершины фигуры
 
     x = sorted(polygon, key=lambda x: x[1])
     print(x)
-    min_x = min(polygon, key=lambda x: x[0])
-    max_x = max(polygon, key=lambda x: x[0])
-    min_y = min(polygon, key=lambda y: y[1])
-    max_y = max(polygon, key=lambda y: y[1])
-    # print(min_x[0], max_x[0])
-    # print(min_y[1], max_y[1])
 
-    # Провекра функции
-    # print(point_on_the_line(((1, 1), (4, 1)), (2, 1)))
+    min_x = min(polygon, key=lambda x: x[0])[0]
+    max_x = max(polygon, key=lambda x: x[0])[0]
+    min_y = min(polygon, key=lambda y: y[1])[1]
+    max_y = max(polygon, key=lambda y: y[1])[1]
 
-    # print(kosoe_proizved(polygon[0], polygon[1]))
+    # print("min X -", min_x)
+
+    ray = (randint(min_x, max_x), randint(min_y, max_y))
+
+    n = 0
+    while (ray in polygon) and n < 300:
+        n += 1
+        ray = (randint(min_x, max_x), randint(min_y, max_y))
+        if n == 297:
+            print("ERROR Ray construct")
+    print("RAY - ", ray)
+
 
     # пробегаемся по всем отрезкам по кругу и проверяем их на пересечения с точкой и с лучем от точки
 
@@ -92,6 +98,8 @@ def is_inside(polygon, point):
         if point_on_the_line((tar_a, tar_b), point):
             print("True")
             return True
+
+        # Определяем пересекает ли луч от контрольной точки проходящий через фигуру поверхность
 
 
 
