@@ -44,7 +44,7 @@ def is_inside(polygon, point):
 
         M = point
 
-        print(A, B, M)
+        # print(A, B, M)
 
         if kosoe_proizved(B, M, A) != 0:
             return False
@@ -53,55 +53,20 @@ def is_inside(polygon, point):
 
         return False
 
+    def point_on_the_ray (start_ray, center_ray, point):
+        """"
+        Функция принимает точку старта луча, точку продолжения луча, точку проверки
+        Если точка проверки лежит на луче - возвращаем True
+        """
+
+        if (kosoe_proizved(center_ray, point, start_ray) == 0) and (skalarnoe_proizved(center_ray, point, start_ray) >= 0):
+            return True
+        else:
+            return False
 
     # крайний случай, точка либо совпадает с вершиной - сразу True и не проводим больше никакие рассчеты
     if point in polygon:
         return True
-
-
-    # Задаем уравнения луча который проходит только через ребра фигуры
-    # то есть уравнение прямой на которой нет ни одной вершины фигуры
-
-    # x = sorted(polygon, key=lambda x: x[1])
-    # print(x)
-    #
-    # min_x = min(polygon, key=lambda x: x[0])[0]
-    # max_x = max(polygon, key=lambda x: x[0])[0]
-    # min_y = min(polygon, key=lambda y: y[1])[1]
-    # max_y = max(polygon, key=lambda y: y[1])[1]
-    #
-    # # print("min X -", min_x)
-    #
-    # ray = (randint(min_x, max_x), randint(min_y, max_y))
-    #
-    # n = 0
-    # while (ray in polygon) and n < 300:
-    #     n += 1
-    #     ray = (randint(min_x, max_x), randint(min_y, max_y))
-    #     if n == 297:
-    #         print("ERROR Ray construct")
-    # print("RAY - ", ray)
-
-
-
-    # пробегаемся по всем отрезкам по кругу и проверяем их на пересечения с точкой и с лучем от точки
-
-    new_polygon = (*polygon, polygon[0])
-    print(new_polygon)
-
-    for i in range(len(new_polygon)-1):
-        tar_a = new_polygon[i]
-        tar_b = new_polygon[i+1]
-
-        print("line -", tar_a, tar_b, "point - ", point)
-
-        # если точка лежит на одной из поверхностей - сразу принимаем решение что точка внутри фигуры
-        if point_on_the_line((tar_a, tar_b), point):
-            print("True")
-            return True
-
-        # Определяем пересекает ли луч от контрольной точки проходящий через фигуру поверхность
-
 
     def ray_and_corner(pol, poi, ra):
         """
@@ -109,18 +74,27 @@ def is_inside(polygon, point):
         елси хоть один угол лежит на прямой - выводим True
         """
 
-        new_pol = (*pol, pol[0])
+        for i in pol:
+           if point_on_the_ray(poi, ra, i):
+               return True
 
-        for i in range(len(new_pol) - 1):
-            tar_a = new_pol[i]
-            tar_b = new_pol[i + 1]
+        return False
 
-            # print("line -", tar_a, tar_b, "point - ", point)
+    def cross_sections(point, ray, a, b):
+        """
+        Функция проверяет есть ли пересечение двух отрезков.
+        По скольку контрольная точка выведена в отрицательную область, а вся фигура по условию
+        находится в положительной условие должно быть достаточное чтобы исключить ложные срабатывания
+        """
 
-            # если точка лежит на одной из поверхностей - сразу принимаем решение что точка внутри фигуры
-            # if point_on_the_line((tar_a, tar_b), point):
-            #     print("True")
-            #     return True
+        if (kosoe_proizved(ray, a, point) * kosoe_proizved(ray, b, point)) < 0 and (kosoe_proizved(b, point, a) * kosoe_proizved(b, ray, a)) < 0:
+            print("kos TRUE")
+            print("1 = ", kosoe_proizved(ray, a, point) * kosoe_proizved(ray, b, point))
+            print("2 = ", kosoe_proizved(b, point, a) * kosoe_proizved(b, ray, a))
+            return True
+
+        print("1 = ", kosoe_proizved(ray, a, point) * kosoe_proizved(ray, b, point))
+        print("2 = ", kosoe_proizved(b, point, a) * kosoe_proizved(b, ray, a))
 
         return False
 
@@ -129,16 +103,15 @@ def is_inside(polygon, point):
     # Выбираем случайную точку далеко за пределами массива 1000, 1000 например и строим чемер нее прямую
     # если прямая пересекает угол - выбираем другую точку
 
-    ray = (randint(-1000, 1000), randint(-1000, 1000))
+    ray = (randint(-100, 100), randint(-100, 100))
 
     n = 0
-    while (ray in polygon) and ray_and_corner(polygon, point, ray) and n < 300:
+    while ((ray in polygon) or ray_and_corner(polygon, point, ray) or (min(ray[0], ray[1]) > 0)) and n < 300:
         n += 1
-        ray = (randint(-1000, 1000), randint(-1000, 1000))
+        ray = (randint(-100, 100), randint(-100, 100))
         if n == 297:
             print("ERROR Ray construct")
     print("RAY - ", ray)
-
 
     # если не пересекает ни одной грани - точка вне фигуры
     # если пересекает нечетное количество граней - точка внутри
@@ -146,16 +119,46 @@ def is_inside(polygon, point):
 
 
 
-    print("False")
-    return False
+
+    # пробегаемся по всем отрезкам по кругу и проверяем их на пересечения с точкой и с лучем от точки
+
+    new_polygon = (*polygon, polygon[0])
+    # print(new_polygon)
+
+    sum_crosses = 0  # количество пересечений луча с  отрезком
+
+    for i in range(len(new_polygon)-1):
+        tar_a = new_polygon[i]
+        tar_b = new_polygon[i+1]
+
+        # print("line -", tar_a, tar_b, "point - ", point)
+
+        # если точка лежит на одной из поверхностей - сразу принимаем решение что точка внутри фигуры
+        if point_on_the_line((tar_a, tar_b), point):
+            print("True")
+            return True
+        # Считаем количество пересечений луча и отрезков фигуры
+        if cross_sections(point, ray, tar_a, tar_b):
+            sum_crosses += 1
+            # print("sum_crosses = ", sum_crosses)
+
+    if sum_crosses == 0 or sum_crosses%2 == 0:
+        print("sum_crosses = ", sum_crosses)
+        return False
+    else:
+        print("False")
+        return True
+
+        # Определяем пересекает ли луч от контрольной точки проходящий через фигуру поверхность
+
 
 
 
 
 
 if __name__ == '__main__':
-    assert is_inside(((1, 1), (1, 3), (3, 3), (3, 1)),
-                     (2, 2)) == True, "First"
+    # assert is_inside(((1, 1), (1, 3), (3, 3), (3, 1)),
+    #                  (2, 2)) == True, "First"
     # assert is_inside(((1, 1), (1, 3), (3, 3), (3, 1)),
     #                  (4, 2)) == False, "Second"
     # assert is_inside(((1, 1), (4, 1), (2, 3)),
@@ -168,5 +171,5 @@ if __name__ == '__main__':
     #                  (4, 3)) == False, "Sixth"
     # assert is_inside(((1, 1), (3, 2), (5, 1), (4, 3), (5, 5), (3, 4), (1, 5), (2, 3)),
     #                  (3, 3)) == True, "Seventh"
-    # assert is_inside(((1, 1), (1, 5), (5, 5), (5, 4), (2, 4), (2, 2), (5, 2), (5, 1)),
-    #                  (4, 3)) == False, "Eighth"
+    assert is_inside(((1, 1), (1, 5), (5, 5), (5, 4), (2, 4), (2, 2), (5, 2), (5, 1)),
+                     (4, 3)) == False, "Eighth"
