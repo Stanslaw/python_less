@@ -88,13 +88,13 @@ def is_inside(polygon, point):
         """
 
         if (kosoe_proizved(ray, a, point) * kosoe_proizved(ray, b, point)) < 0 and (kosoe_proizved(b, point, a) * kosoe_proizved(b, ray, a)) < 0:
-            print("kos TRUE")
-            print("1 = ", kosoe_proizved(ray, a, point) * kosoe_proizved(ray, b, point))
-            print("2 = ", kosoe_proizved(b, point, a) * kosoe_proizved(b, ray, a))
+            # print("kos TRUE")
+            # print("1 = ", kosoe_proizved(ray, a, point) * kosoe_proizved(ray, b, point))
+            # print("2 = ", kosoe_proizved(b, point, a) * kosoe_proizved(b, ray, a))
             return True
 
-        print("1 = ", kosoe_proizved(ray, a, point) * kosoe_proizved(ray, b, point))
-        print("2 = ", kosoe_proizved(b, point, a) * kosoe_proizved(b, ray, a))
+        # print("1 = ", kosoe_proizved(ray, a, point) * kosoe_proizved(ray, b, point))
+        # print("2 = ", kosoe_proizved(b, point, a) * kosoe_proizved(b, ray, a))
 
         return False
 
@@ -146,7 +146,7 @@ def is_inside(polygon, point):
         print("sum_crosses = ", sum_crosses)
         return False
     else:
-        print("False")
+        print("sum_crosses = ", sum_crosses)
         return True
 
         # Определяем пересекает ли луч от контрольной точки проходящий через фигуру поверхность
@@ -159,8 +159,8 @@ def is_inside(polygon, point):
 if __name__ == '__main__':
     # assert is_inside(((1, 1), (1, 3), (3, 3), (3, 1)),
     #                  (2, 2)) == True, "First"
-    # assert is_inside(((1, 1), (1, 3), (3, 3), (3, 1)),
-    #                  (4, 2)) == False, "Second"
+    assert is_inside(((1, 1), (1, 3), (3, 3), (3, 1)),
+                     (4, 2)) == False, "Second"
     # assert is_inside(((1, 1), (4, 1), (2, 3)),
     #                  (3, 2)) == True, "Third"
     # assert is_inside(((1, 1), (4, 1), (1, 3)),
@@ -171,5 +171,5 @@ if __name__ == '__main__':
     #                  (4, 3)) == False, "Sixth"
     # assert is_inside(((1, 1), (3, 2), (5, 1), (4, 3), (5, 5), (3, 4), (1, 5), (2, 3)),
     #                  (3, 3)) == True, "Seventh"
-    assert is_inside(((1, 1), (1, 5), (5, 5), (5, 4), (2, 4), (2, 2), (5, 2), (5, 1)),
-                     (4, 3)) == False, "Eighth"
+    # assert is_inside(((1, 1), (1, 5), (5, 5), (5, 4), (2, 4), (2, 2), (5, 2), (5, 1)),
+    #                  (4, 3)) == False, "Eighth"
