@@ -62,25 +62,26 @@ def is_inside(polygon, point):
     # Задаем уравнения луча который проходит только через ребра фигуры
     # то есть уравнение прямой на которой нет ни одной вершины фигуры
 
-    x = sorted(polygon, key=lambda x: x[1])
-    print(x)
+    # x = sorted(polygon, key=lambda x: x[1])
+    # print(x)
+    #
+    # min_x = min(polygon, key=lambda x: x[0])[0]
+    # max_x = max(polygon, key=lambda x: x[0])[0]
+    # min_y = min(polygon, key=lambda y: y[1])[1]
+    # max_y = max(polygon, key=lambda y: y[1])[1]
+    #
+    # # print("min X -", min_x)
+    #
+    # ray = (randint(min_x, max_x), randint(min_y, max_y))
+    #
+    # n = 0
+    # while (ray in polygon) and n < 300:
+    #     n += 1
+    #     ray = (randint(min_x, max_x), randint(min_y, max_y))
+    #     if n == 297:
+    #         print("ERROR Ray construct")
+    # print("RAY - ", ray)
 
-    min_x = min(polygon, key=lambda x: x[0])[0]
-    max_x = max(polygon, key=lambda x: x[0])[0]
-    min_y = min(polygon, key=lambda y: y[1])[1]
-    max_y = max(polygon, key=lambda y: y[1])[1]
-
-    # print("min X -", min_x)
-
-    ray = (randint(min_x, max_x), randint(min_y, max_y))
-
-    n = 0
-    while (ray in polygon) and n < 300:
-        n += 1
-        ray = (randint(min_x, max_x), randint(min_y, max_y))
-        if n == 297:
-            print("ERROR Ray construct")
-    print("RAY - ", ray)
 
 
     # пробегаемся по всем отрезкам по кругу и проверяем их на пересечения с точкой и с лучем от точки
@@ -102,9 +103,54 @@ def is_inside(polygon, point):
         # Определяем пересекает ли луч от контрольной точки проходящий через фигуру поверхность
 
 
+    def ray_and_corner(pol, poi, ra):
+        """
+        функция принимает две точки прямой и перебирает все точки углов фигуры
+        елси хоть один угол лежит на прямой - выводим True
+        """
+
+        new_pol = (*pol, pol[0])
+
+        for i in range(len(new_pol) - 1):
+            tar_a = new_pol[i]
+            tar_b = new_pol[i + 1]
+
+            # print("line -", tar_a, tar_b, "point - ", point)
+
+            # если точка лежит на одной из поверхностей - сразу принимаем решение что точка внутри фигуры
+            if point_on_the_line((tar_a, tar_b), point):
+                print("True")
+                return True
+
+        return False
+
+
+    # изменим логику проверки
+    # Выбираем случайную точку далеко за пределами массива 1000, 1000 например и строим чемер нее прямую
+    # если прямая пересекает угол - выбираем другую точку
+
+    ray = (randint(-1000, 1000), randint(-1000, 1000))
+
+    n = 0
+    while (ray in polygon) and ray_and_corner(polygon, point, ray) and n < 300:
+        n += 1
+        ray = (randint(-1000, 1000), randint(-1000, 1000))
+        if n == 297:
+            print("ERROR Ray construct")
+    print("RAY - ", ray)
+
+
+    # если не пересекает ни одной грани - точка вне фигуры
+    # если пересекает нечетное количество граней - точка внутри
+    # если четное - точка снаружи
+
+
 
     print("False")
     return False
+
+
+
 
 
 if __name__ == '__main__':
