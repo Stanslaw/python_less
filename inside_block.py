@@ -118,9 +118,9 @@ def is_inside(polygon, point):
             # print("line -", tar_a, tar_b, "point - ", point)
 
             # если точка лежит на одной из поверхностей - сразу принимаем решение что точка внутри фигуры
-            if point_on_the_line((tar_a, tar_b), point):
-                print("True")
-                return True
+            # if point_on_the_line((tar_a, tar_b), point):
+            #     print("True")
+            #     return True
 
         return False
 
