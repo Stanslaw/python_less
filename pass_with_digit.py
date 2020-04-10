@@ -7,13 +7,27 @@ def is_acceptable_password(password: str) -> bool:
     if re.findall("password", password.lower()):
         return False
 
-    # если только из цифр и длинна меньше 9 - False
+    # если только из цифр
     flag = False
     for i in password:
         if not i.isdigit():
             flag = True
+            break
 
-    if len(password) > 9 or flag and len(password) > 6 and password[-1].isdigit():
+    # если длинна больше 9 можно и одни цифры
+    flag2 = False
+    if len(password) > 9:
+        flag2 = True
+
+    bd_pass = []
+    for i in password:
+        bd_pass.append(i)
+
+    len_bd_pass = len(set(bd_pass))
+
+    # print(len_bd_pass)
+
+    if len_bd_pass >= 3 and (flag2 or flag and len(password) > 6 and password[-1].isdigit()):
         return True
 
     return False
