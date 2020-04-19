@@ -1,26 +1,19 @@
 def isometric_strings(str1: str, str2: str) -> bool:
     # your code here
-    first = []
-    second = []
     shifr = {}
-
     tmp = []
 
-    for i in str1:
-        first.append(i)
-    for i in str2:
-        second.append(i)
     # Если у строк одинаковая длинна просто бежим посимвольно формируя алфавит
     # затем проверяем работает ли расшифровка
-    if len(first) == len(second):
-        for i in range(len(first)):
-            shifr[first[i]] = second[i]
+    if len(str1) == len(str2):
+        for i in range(len(str1)):
+            shifr[str1[i]] = str2[i]
 
-        for i in range(len(first)):
-            tmp.append(shifr[first[i]])
+        for i in range(len(str1)):
+            tmp.append(shifr[str1[i]])
 
-        print("TMP", tmp, "Second", second)
-        if tmp == second:
+        print("TMP", ''.join(tmp), "str2", str2)
+        if ''.join(tmp) == str2:
             return True
 
 
@@ -32,9 +25,9 @@ if __name__ == '__main__':
     # print(isometric_strings('add', 'egg'))
 
     # These "asserts" are used for self-checking and not for an auto-testing
-    # assert isometric_strings('add', 'egg') == True
-    # assert isometric_strings('foo', 'bar') == False
-    # assert isometric_strings('', '') == True
-    # assert isometric_strings('all', 'all') == True
+    assert isometric_strings('add', 'egg') == True
+    assert isometric_strings('foo', 'bar') == False
+    assert isometric_strings('', '') == True
+    assert isometric_strings('all', 'all') == True
     assert isometric_strings("hall", "hoop") == False
     print("Coding complete? Click 'Check' to earn cool rewards!")
