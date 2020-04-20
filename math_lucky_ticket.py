@@ -10,7 +10,8 @@ def checkio(data):
     def rec_razer(num_tick):
 
         if len(num_tick) > 1:
-            variants.append([rec_razer(num_tick[0:-1]), num_tick[-1]])
+            variants.append([num_tick[0:-1], num_tick[-1]] + (variants[-1][1:] if variants else ["none"]))
+            rec_razer(num_tick[0:-1])
             # print("+")
 
         return num_tick
@@ -19,6 +20,7 @@ def checkio(data):
     rec_razer(data)
 
     print(variants)
+
 
     # потом подставлять все возможные варианты математических знаков
 
