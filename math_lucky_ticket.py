@@ -41,7 +41,7 @@ def checkio(data):
     # заодно ищем и пропускаем совпадения
     all_iteration = 0
     n = 0
-    while n < 20:
+    while len(variants) < 16:
         all_iteration += 1
         n += 1
         for sec in variants:
