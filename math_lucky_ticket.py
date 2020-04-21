@@ -2,13 +2,10 @@ from random import randint
 import operator
 def checkio(data):
 
-    #replace this for solution
-
     # сначала,наверное, надо разбить число на все возможные варианты слагаемых
 
     variants = []
     data_list = []
-
 
     def concatinate(sec_f, num_x_f):
         """
@@ -17,8 +14,7 @@ def checkio(data):
         """
 
         output = []
-        # print(sec_f)
-        # print(num_x_f)
+
         for idx, val in enumerate(sec_f):
             if idx < num_x_f or idx > num_x_f+1:
                 output.append(val)
@@ -27,25 +23,22 @@ def checkio(data):
         # print("OUT", output)
         return output
 
-
-
     for i in data:
         data_list.append(i)
 
+    # Добавляем в список вариантов первый гинезисный вариант, каждая цифра отдельно
     variants.append(data_list)
-    
-    # print(variants)
 
 
     # Мы случайным образом будем слеплять два соседних символа и добавлять о общую базу
     # заодно ищем и пропускаем совпадения
-    all_iteration = 0
+    # all_iteration = 0
     n = 0
     while len(variants) < 16:
-        all_iteration += 1
+        # all_iteration += 1
         n += 1
         for sec in variants:
-            all_iteration += 1
+            # all_iteration += 1
             if len(sec) == 1:
                 break
             num_x = randint(0, len(sec)-2)
@@ -53,8 +46,7 @@ def checkio(data):
             if new_sequence not in variants:
                 variants.append(new_sequence)
 
-
-    print(variants, len(variants), all_iteration)
+    print(variants, len(variants)) # выводим все возможные комбинации чисел и общее количество (16)
 
 
     # потом подставлять все возможные варианты математических знаков
@@ -72,7 +64,7 @@ def checkio(data):
                 new_tmp_var.append(val)
             elif idx == num_position_f:
                 
-                if float(tmp_var_f[idx + 1]) == 0:
+                if float(tmp_var_f[idx + 1]) == 0: # Если второе слагаемое 0 - запрещаем деление
                     num_operation_f = randint(0, 2)
                 
                 if num_operation_f == 0:
@@ -83,7 +75,6 @@ def checkio(data):
                     new_tmp_var.append(operator.mul(float(val),  float(tmp_var_f[idx + 1])))
                 elif num_operation_f == 3:
                     new_tmp_var.append(operator.truediv(float(val),  float(tmp_var_f[idx + 1])))
-
 
         return new_tmp_var
 
@@ -96,43 +87,38 @@ def checkio(data):
         - False
         """
         exit_idx = 0
-        while exit_idx < 10000:
+        while exit_idx < 1000:
             tmp_var = var[:]
             # print("TMPVAR -", tmp_var)
             exit_idx += 1
 
             for _ in range(len(tmp_var)-1):
-                print("FOR _", _, "TMPVAR", tmp_var)
-                # if len(tmp_var) == 1:
-                #     print("BREAK")
-                #     break
+                # print("FOR _", _, "TMPVAR", tmp_var)
+
                 num_position = randint(0, len(tmp_var)-2)
                 num_operation = randint(0, 3) # случайным образом выбираем операцию которую будем производить над символами
 
                 tmp_var = doing_operation(tmp_var, num_position, num_operation)
 
-            if tmp_var not in final_summs:
-                final_summs.append(tmp_var)
-            print("Final TMPVAR", tmp_var)
+                if tmp_var == [100.0]:
+                    return True
 
-            if tmp_var == [100.0]:
-                return True
+            # if tmp_var not in final_summs:
+            #     final_summs.append(tmp_var)
+            # print("Final TMPVAR", tmp_var)
 
         return False
 
     final_summs = []
 
     for i in variants[:]:
-        print(list(map(lambda x: int(x), i)))
         # отправляем последовательность в функцию т возвращаем True если знаками можно набрать 100
         if try_give_100(list(map(lambda x: int(x), i))):
+            print("False")
             return False
-        # print(i)
 
-    print("Final Sums - ", final_summs, "LEN -", len(final_summs))
-
-
-
+    # print("Final Sums - ", final_summs, "LEN -", len(final_summs))
+    print("True")
     return True
 
 #These "asserts" using only for self-checking and not necessary for auto-testing
