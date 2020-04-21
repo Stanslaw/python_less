@@ -71,14 +71,18 @@ def checkio(data):
             if idx < num_position_f or idx > num_position_f + 1:
                 new_tmp_var.append(val)
             elif idx == num_position_f:
+                
+                if float(tmp_var_f[idx + 1]) == 0:
+                    num_operation_f = randint(0, 2)
+                
                 if num_operation_f == 0:
                     new_tmp_var.append(operator.add(float(val),  float(tmp_var_f[idx + 1])))
                 elif num_operation_f == 1:
                     new_tmp_var.append(operator.sub(float(val),  float(tmp_var_f[idx + 1])))
                 elif num_operation_f == 2:
                     new_tmp_var.append(operator.mul(float(val),  float(tmp_var_f[idx + 1])))
-                # elif num_operation_f == 3:
-                #     new_tmp_var.append(operator.div(float(val),  float(tmp_var_f[idx + 1])))
+                elif num_operation_f == 3:
+                    new_tmp_var.append(operator.truediv(float(val),  float(tmp_var_f[idx + 1])))
 
 
         return new_tmp_var
@@ -92,28 +96,40 @@ def checkio(data):
         - False
         """
         exit_idx = 0
-        while exit_idx < 100:
+        while exit_idx < 10000:
             tmp_var = var[:]
+            # print("TMPVAR -", tmp_var)
             exit_idx += 1
 
             for _ in range(len(tmp_var)-1):
-                if len(tmp_var) == 1:
-                    if tmp_var == 100:
-                        return True
-                    break
+                print("FOR _", _, "TMPVAR", tmp_var)
+                # if len(tmp_var) == 1:
+                #     print("BREAK")
+                #     break
                 num_position = randint(0, len(tmp_var)-2)
                 num_operation = randint(0, 3) # случайным образом выбираем операцию которую будем производить над символами
 
                 tmp_var = doing_operation(tmp_var, num_position, num_operation)
 
+            if tmp_var not in final_summs:
+                final_summs.append(tmp_var)
+            print("Final TMPVAR", tmp_var)
+
+            if tmp_var == [100.0]:
+                return True
+
         return False
 
-    for i in variants:
-        # print(list(map(lambda x: int(x), i)))
+    final_summs = []
+
+    for i in variants[:]:
+        print(list(map(lambda x: int(x), i)))
         # отправляем последовательность в функцию т возвращаем True если знаками можно набрать 100
         if try_give_100(list(map(lambda x: int(x), i))):
             return False
         # print(i)
+
+    print("Final Sums - ", final_summs, "LEN -", len(final_summs))
 
 
 
@@ -123,5 +139,5 @@ def checkio(data):
 if __name__ == '__main__':
     # assert checkio('000000') == True, "All zeros"
     # assert checkio('707409') == True, "You can not transform it to 100"
-    assert checkio('593347') == False, "(5 + ((9 / (3 / 34)) - 7)) = 100"
-    # assert checkio('271353') == False, "(2 - (7 * (((1 / 3) - 5) * 3))) = 100"
+    # assert checkio('593347') == False, "(5 + ((9 / (3 / 34)) - 7)) = 100"
+    assert checkio('271353') == False, "(2 - (7 * (((1 / 3) - 5) * 3))) = 100"
