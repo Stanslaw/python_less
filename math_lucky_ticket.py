@@ -87,13 +87,13 @@ def checkio(data):
         - False
         """
         exit_idx = 0
-        while exit_idx < 1000:
+        while exit_idx < 110000:
             tmp_var = var[:]
             # print("TMPVAR -", tmp_var)
             exit_idx += 1
 
             for _ in range(len(tmp_var)-1):
-                # print("FOR _", _, "TMPVAR", tmp_var)
+                print("FOR _", _, "TMPVAR", tmp_var)
 
                 num_position = randint(0, len(tmp_var)-2)
                 num_operation = randint(0, 3) # случайным образом выбираем операцию которую будем производить над символами
@@ -109,7 +109,7 @@ def checkio(data):
 
         return False
 
-    final_summs = []
+    # final_summs = []
 
     for i in variants[:]:
         # отправляем последовательность в функцию т возвращаем True если знаками можно набрать 100
@@ -126,4 +126,5 @@ if __name__ == '__main__':
     # assert checkio('000000') == True, "All zeros"
     # assert checkio('707409') == True, "You can not transform it to 100"
     # assert checkio('593347') == False, "(5 + ((9 / (3 / 34)) - 7)) = 100"
-    assert checkio('271353') == False, "(2 - (7 * (((1 / 3) - 5) * 3))) = 100"
+    # assert checkio('271353') == False, "(2 - (7 * (((1 / 3) - 5) * 3))) = 100"
+    assert checkio("392039") == False, "((3 + 9) * ((2 / (0 - 3)) + 9)) = 100"
