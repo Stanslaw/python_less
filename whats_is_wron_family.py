@@ -18,8 +18,32 @@ def is_family(tree):
             graf[i[0]] += [i[1]]
         all_people.append(i[0])
         all_people.append(i[1])
+
+    for i in graf:
+        graf[i] = set(graf[i])
+
     print(graf)
     print(set(all_people))
+
+    # обходим граф по всем вершинам если из первой вершини проходят все остальные
+    # считаем что первое условие True
+
+    def dfs(graph, start):
+        visited, stack = set(), [start]
+        while stack:
+            vertex = stack.pop()
+            if vertex not in visited:
+                visited.add(vertex)
+                stack.extend(graph[vertex] - visited)
+        return visited
+
+    # print(tree[0][0])
+
+    print(dfs(graf, tree[0][0]), first_u)
+
+    if dfs(graf, tree[0][0]) == set(all_people):
+        first_u = True
+
 
 
     return True
