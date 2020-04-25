@@ -5,7 +5,7 @@ def is_family(tree):
     # 1. каждый элемент связан с первым
     # 2. Нет циклов
 
-    print(tree)
+    # print(tree)
 
     # делаем граф
     graf = {}
@@ -19,30 +19,43 @@ def is_family(tree):
         all_people.append(i[0])
         all_people.append(i[1])
 
-    for i in graf:
-        graf[i] = set(graf[i])
+    for i in set(all_people):
+        if i in graf:
+            graf[i] = set(graf[i])
+        else:
+            graf[i] = {}
 
     print(graf)
-    print(set(all_people))
+    # print(set(all_people))
 
     # обходим граф по всем вершинам если из первой вершини проходят все остальные
     # считаем что первое условие True
 
-    def dfs(graph, start):
-        visited, stack = set(), [start]
-        while stack:
-            vertex = stack.pop()
-            if vertex not in visited:
-                visited.add(vertex)
-                stack.extend(graph[vertex] - visited)
+    def dfs(graph, start, visited=None):
+        if visited is None:
+            visited = set()
+        visited.add(start)
+        for next in graph[start] - visited:
+            dfs(graph, next, visited)
         return visited
+
+    def dfs_paths(graph, start, goal):
+        stack = [(start, [start])]
+        while stack:
+            (vertex, path) = stack.pop()
+            for next in graph[vertex] - set(path):
+                if next == goal:
+                    yield path + [next]
+                else:
+                    stack.append((next, path + [next]))
 
     # print(tree[0][0])
 
-    print(dfs(graf, tree[0][0]), first_u)
+    x = dfs(graf, 'Logan')
+    print(list(x))
 
-    if dfs(graf, tree[0][0]) == set(all_people):
-        first_u = True
+    # if dfs(graf, tree[0][0]) == set(all_people):
+    #     first_u = True
 
 
 
