@@ -27,31 +27,41 @@ def is_family(tree):
         all_people.update(set([i[0], i[1]]))
 
     print(graf)
-    print(sorted(set(all_people)))
+    # print(sorted(set(all_people)))
 
     # обходим граф по всем вершинам если из первой вершини проходят все остальные
     # считаем что первое условие True
 
 
-    def dfs(graph, start, visited=None):
+    def dfs(graph, start, visited=None, flag = None):
         if visited is None:
             visited = set()
+            flag = True
         visited.add(start)
 
-        try:
-            for next in graph[start] - visited:
-                dfs(graph, next, visited)
-        except KeyError:
-            pass
-
-        return visited
 
 
-    x = dfs(graf, 'Logan')
+        for next in graph[start] - visited:
+            if next in graph:
+               dfs(graph, next, visited)
+            else:
+                visited.add(next)
+
+            if not graph[start].isdisjoint(visited):
+                print("graph[start]", graph[start], "visited", visited)
+                flag = False
+
+        return [visited, flag]
+
+
+    # print(tree[0][0])
+
+    x, y = dfs(graf, str(tree[0][0]))[0], dfs(graf, str(tree[0][0]))[1]
     print("FUN - ", sorted(x))
 
-    if sorted(dfs(graf, tree[0][0])) == sorted(set(all_people)):
-        print("True")
+    if sorted(x) == sorted(set(all_people)):
+        print("True", y)
+
         first_u = True
 
 
@@ -68,16 +78,16 @@ if __name__ == "__main__":
     #   ['Logan', 'Mike'],
     #   ['Logan', 'Jack']
     # ]) == True, 'Two sons'
-    assert is_family([
-      ['Logan', 'Mike'],
-      ['Logan', 'Jack'],
-      ['Mike', 'Alexander']
-    ]) == True, 'Grandfather'
     # assert is_family([
     #   ['Logan', 'Mike'],
     #   ['Logan', 'Jack'],
-    #   ['Mike', 'Logan']
-    # ]) == False, 'Can you be a father to your father?'
+    #   ['Mike', 'Alexander']
+    # ]) == True, 'Grandfather'
+    assert is_family([
+      ['Logan', 'Mike'],
+      ['Logan', 'Jack'],
+      ['Mike', 'Logan']
+    ]) == False, 'Can you be a father to your father?'
     # assert is_family([
     #   ['Logan', 'Mike'],
     #   ['Logan', 'Jack'],
