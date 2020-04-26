@@ -7,6 +7,10 @@ def is_family(tree):
 
     # print(tree)
 
+    # y = set(["a", "b", "c"])
+    # y = y - set("c")
+    # print(y)
+
     # делаем граф
     graf = {}
     all_people = set()
@@ -23,45 +27,32 @@ def is_family(tree):
         all_people.update(set([i[0], i[1]]))
 
     print(graf)
-    print(set(all_people))
+    print(sorted(set(all_people)))
 
     # обходим граф по всем вершинам если из первой вершини проходят все остальные
     # считаем что первое условие True
 
-    # def bfs(graph, start):
-    #     visited, queue = set(), [start]
-    #     while queue:
-    #         vertex = queue.pop(0)
-    #         if vertex not in visited:
-    #             visited.add(vertex)
-    #             queue.extend(graph[vertex] - visited)
-    #     return visited
 
     def dfs(graph, start, visited=None):
         if visited is None:
             visited = set()
         visited.add(start)
-        for next in graph[start] - visited:
-            dfs(graph, next, visited)
+
+        try:
+            for next in graph[start] - visited:
+                dfs(graph, next, visited)
+        except KeyError:
+            pass
+
         return visited
 
-    # def dfs_paths(graph, start, goal):
-    #     stack = [(start, [start])]
-    #     while stack:
-    #         (vertex, path) = stack.pop()
-    #         for next in graph[vertex] - set(path):
-    #             if next == goal:
-    #                 yield path + [next]
-    #             else:
-    #                 stack.append((next, path + [next]))
-
-    # print(tree[0][0])
 
     x = dfs(graf, 'Logan')
-    print(list(x))
+    print("FUN - ", sorted(x))
 
-    # if dfs(graf, tree[0][0]) == set(all_people):
-    #     first_u = True
+    if sorted(dfs(graf, tree[0][0])) == sorted(set(all_people)):
+        print("True")
+        first_u = True
 
 
 
