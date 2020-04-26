@@ -9,27 +9,33 @@ def is_family(tree):
 
     # делаем граф
     graf = {}
-    all_people = []
+    all_people = set()
 
     for i in tree:
         if i[0] not in graf:
-            graf[i[0]] = [i[1]]
+            graf[i[0]] = set([i[1]])
         else:
-            graf[i[0]] += [i[1]]
-        all_people.append(i[0])
-        all_people.append(i[1])
-
-    for i in set(all_people):
-        if i in graf:
-            graf[i] = set(graf[i])
-        else:
-            graf[i] = {}
+            tmp = graf[i[0]]
+            tmp.add(i[1])
+            # print(tmp)
+            graf[i[0]] = tmp
+            
+        all_people.update(set([i[0], i[1]]))
 
     print(graf)
-    # print(set(all_people))
+    print(set(all_people))
 
     # обходим граф по всем вершинам если из первой вершини проходят все остальные
     # считаем что первое условие True
+
+    # def bfs(graph, start):
+    #     visited, queue = set(), [start]
+    #     while queue:
+    #         vertex = queue.pop(0)
+    #         if vertex not in visited:
+    #             visited.add(vertex)
+    #             queue.extend(graph[vertex] - visited)
+    #     return visited
 
     def dfs(graph, start, visited=None):
         if visited is None:
@@ -39,15 +45,15 @@ def is_family(tree):
             dfs(graph, next, visited)
         return visited
 
-    def dfs_paths(graph, start, goal):
-        stack = [(start, [start])]
-        while stack:
-            (vertex, path) = stack.pop()
-            for next in graph[vertex] - set(path):
-                if next == goal:
-                    yield path + [next]
-                else:
-                    stack.append((next, path + [next]))
+    # def dfs_paths(graph, start, goal):
+    #     stack = [(start, [start])]
+    #     while stack:
+    #         (vertex, path) = stack.pop()
+    #         for next in graph[vertex] - set(path):
+    #             if next == goal:
+    #                 yield path + [next]
+    #             else:
+    #                 stack.append((next, path + [next]))
 
     # print(tree[0][0])
 
