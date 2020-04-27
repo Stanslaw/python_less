@@ -11,11 +11,13 @@ graf = {'A': ['B', 'C'],
 
 
 print(graf)
+print(" ")
 
 
-def dfs(graph, start, start_prev=None, flag=[], vertex=set()):
-    # if not flag:
-    #     flag = []
+def dfs(graph, start, start_prev=None, flag=None, vertex=None):
+    if vertex == None:
+        vertex = set()
+        flag = False
 
     vertex.add(start)
     # start_prev = start
@@ -27,19 +29,21 @@ def dfs(graph, start, start_prev=None, flag=[], vertex=set()):
                 vertex.add(ver)
             else:
                 dfs(graph, ver, start, flag, vertex)
+
         elif (ver in vertex) and (ver != start_prev):
             print("ver -", ver, "start_prev -", start_prev)
             #если мы пришли в посещенную вершину надо сделать пометку что в графе есть цикл
-            flag.append(1)
+            flag = True
             print("FLAG", flag)
         else:
             print("ver -", ver, "start_prev -", start_prev)
 
-    return [vertex, len(flag)]
+    return [vertex, flag]
 
 
 # print("HI")
-x = dfs(graf, 'E')
-
-print("X =", x[0], "flag = ", x[1])
+for i in graf:
+    x = dfs(graf, i)
+    print("X =", x[0], "flag = ", x[1])
+    print("____________________")
 
