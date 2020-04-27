@@ -29,28 +29,28 @@ def is_family(tree):
     # считаем что первое условие True
 
 
-    def dfs(graph, start, flag, visited=set()):
-        # if visited is None:
-        #     flag = True
-        #     visited = set()
+    def dfs(graph, start, visited=None, flag=None):
+        if visited == None:
+            flag = True
+            visited = set()
 
         visited.add(start)
-        print("Visited -", visited)
+        print("Visited -", visited, "Flag -", flag)
 
 
         for next in graph[start]:
             if next in visited:
-                print(next, visited, "CICLE")
                 flag = False
+                print(next, visited, flag, "CICLE")
 
             else:
                 if next in graph:
-                   dfs(graph, next, flag, visited)
+                   visited, flag = dfs(graph, next, visited, flag)
                 else:
                     visited.add(next)
-                    print("Visited -", visited)
+                    print("Visited -", visited, "Flag -", flag)
 
-        print("Visited -", visited)
+        print("Visited -", visited, "Flag -", flag)
         return [visited, flag]
 
 
@@ -58,7 +58,7 @@ def is_family(tree):
 
     for i in graf:
         print(i)
-        x, y = dfs(graf, i, True)
+        x, y = dfs(graf, i)
         print("FUN - ", sorted(x), sorted(set(all_people)), y)
         if sorted(x) == sorted(set(all_people)):
             break
@@ -75,34 +75,34 @@ def is_family(tree):
 
 if __name__ == "__main__":
     #These "asserts" using only for self-checking and not necessary for auto-testing
-    # assert is_family([
-    #   ['Logan', 'Mike']
-    # ]) == True, 'One father, one son'
-    # assert is_family([
-    #   ['Logan', 'Mike'],
-    #   ['Logan', 'Jack']
-    # ]) == True, 'Two sons'
-    # assert is_family([
-    #   ['Logan', 'Mike'],
-    #   ['Logan', 'Jack'],
-    #   ['Mike', 'Alexander']
-    # ]) == True, 'Grandfather'
+    assert is_family([
+      ['Logan', 'Mike']
+    ]) == True, 'One father, one son'
+    assert is_family([
+      ['Logan', 'Mike'],
+      ['Logan', 'Jack']
+    ]) == True, 'Two sons'
+    assert is_family([
+      ['Logan', 'Mike'],
+      ['Logan', 'Jack'],
+      ['Mike', 'Alexander']
+    ]) == True, 'Grandfather'
     assert is_family([
       ['Logan', 'Mike'],
       ['Logan', 'Jack'],
       ['Mike', 'Logan']
     ]) == False, 'Can you be a father to your father?'
-    # assert is_family([
-    #   ['Logan', 'Mike'],
-    #   ['Logan', 'Jack'],
-    #   ['Mike', 'Jack']
-    # ]) == False, 'Can you be a father to your brother?'
-    # assert is_family([
-    #   ['Logan', 'William'],
-    #   ['Logan', 'Jack'],
-    #   ['Mike', 'Alexander']
-    # ]) == False, 'Looks like Mike is stranger in Logan\'s family'
+    assert is_family([
+      ['Logan', 'Mike'],
+      ['Logan', 'Jack'],
+      ['Mike', 'Jack']
+    ]) == False, 'Can you be a father to your brother?'
+    assert is_family([
+      ['Logan', 'William'],
+      ['Logan', 'Jack'],
+      ['Mike', 'Alexander']
+    ]) == False, 'Looks like Mike is stranger in Logan\'s family'
 
-    # assert is_family([["Logan", "Mike"], ["Alexander", "Jack"], ["Jack", "Logan"]]) == True
+    assert is_family([["Logan", "Mike"], ["Alexander", "Jack"], ["Jack", "Logan"]]) == True
 
     print("Looks like you know everything. It is time for 'Check'!")
