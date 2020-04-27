@@ -1,101 +1,45 @@
 
-def is_family(tree):
 
-    # Это задача на граф. Необходимо построить граф и проверить условия.
-    # 1. каждый элемент связан с первым
-    # 2. Нет циклов
-
-    # print(tree)
-
-    # y = set(["a", "b", "c"])
-    # y = y - set("c")
-    # print(y)
-
-    # делаем граф
-    graf = {}
-    all_people = set()
-
-    for i in tree:
-        if i[0] not in graf:
-            graf[i[0]] = set([i[1]])
-        else:
-            tmp = graf[i[0]]
-            tmp.add(i[1])
-            # print(tmp)
-            graf[i[0]] = tmp
-            
-        all_people.update(set([i[0], i[1]]))
-
-    print(graf)
-    # print(sorted(set(all_people)))
-
-    # обходим граф по всем вершинам если из первой вершини проходят все остальные
-    # считаем что первое условие True
-
-
-    def dfs(graph, start, visited=None, flag = None):
-        if visited is None:
-            visited = set()
-            flag = True
-        visited.add(start)
+# делаем граф
+graf = {'A': ['B', 'C'],
+         'B': ['C', 'D'],
+         'C': ['D'],
+         'D': ['C'],
+         'E': ['F'],
+         'F': ['C']}
 
 
 
-        for next in graph[start] - visited:
-            if next in graph:
-               dfs(graph, next, visited)
+print(graf)
+
+
+def dfs(graph, start, start_prev=None, flag=[], vertex=set()):
+    # if not flag:
+    #     flag = []
+
+    vertex.add(start)
+    # start_prev = start
+    print(vertex)
+
+    for ver in graph[start]:
+        if ver not in vertex:
+            if ver not in graph:
+                vertex.add(ver)
             else:
-                visited.add(next)
+                dfs(graph, ver, start, flag, vertex)
+        elif (ver in vertex) and (ver != start_prev):
+            print("ver -", ver, "start_prev -", start_prev)
+            #если мы пришли в посещенную вершину надо сделать пометку что в графе есть цикл
+            flag.append(1)
+            print("FLAG", flag)
+        else:
+            print("ver -", ver, "start_prev -", start_prev)
 
-            if not graph[start].isdisjoint(visited):
-                print("graph[start]", graph[start], "visited", visited)
-                flag = False
-
-        return [visited, flag]
-
-
-    # print(tree[0][0])
-
-    x, y = dfs(graf, str(tree[0][0]))[0], dfs(graf, str(tree[0][0]))[1]
-    print("FUN - ", sorted(x))
-
-    if sorted(x) == sorted(set(all_people)):
-        print("True", y)
-
-        first_u = True
+    return [vertex, len(flag)]
 
 
+# print("HI")
+x = dfs(graf, 'E')
 
-    return True
+print("X =", x[0], "flag = ", x[1])
 
-
-if __name__ == "__main__":
-    #These "asserts" using only for self-checking and not necessary for auto-testing
-    # assert is_family([
-    #   ['Logan', 'Mike']
-    # ]) == True, 'One father, one son'
-    # assert is_family([
-    #   ['Logan', 'Mike'],
-    #   ['Logan', 'Jack']
-    # ]) == True, 'Two sons'
-    # assert is_family([
-    #   ['Logan', 'Mike'],
-    #   ['Logan', 'Jack'],
-    #   ['Mike', 'Alexander']
-    # ]) == True, 'Grandfather'
-    assert is_family([
-      ['Logan', 'Mike'],
-      ['Logan', 'Jack'],
-      ['Mike', 'Logan']
-    ]) == False, 'Can you be a father to your father?'
-    # assert is_family([
-    #   ['Logan', 'Mike'],
-    #   ['Logan', 'Jack'],
-    #   ['Mike', 'Jack']
-    # ]) == False, 'Can you be a father to your brother?'
-    # assert is_family([
-    #   ['Logan', 'William'],
-    #   ['Logan', 'Jack'],
-    #   ['Mike', 'Alexander']
-    # ]) == False, 'Looks like Mike is stranger in Logan\'s family'
-    print("Looks like you know everything. It is time for 'Check'!")
