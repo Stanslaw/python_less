@@ -29,7 +29,7 @@ def is_family(tree):
     # считаем что первое условие True
 
 
-    def dfs(graph, start, visited=set(), flag = []):
+    def dfs(graph, start, flag, visited=set()):
         # if visited is None:
         #     flag = True
         #     visited = set()
@@ -41,11 +41,11 @@ def is_family(tree):
         for next in graph[start]:
             if next in visited:
                 print(next, visited, "CICLE")
-                flag.append(1)
+                flag = False
 
             else:
                 if next in graph:
-                   dfs(graph, next, visited)
+                   dfs(graph, next, flag, visited)
                 else:
                     visited.add(next)
                     print("Visited -", visited)
@@ -56,8 +56,12 @@ def is_family(tree):
 
     # print(tree[0][0])
 
-    x, y = dfs(graf, tree[0][0])
-    print("FUN - ", sorted(x), sorted(set(all_people)), not bool(y))
+    for i in graf:
+        print(i)
+        x, y = dfs(graf, i, True)
+        print("FUN - ", sorted(x), sorted(set(all_people)), y)
+        if sorted(x) == sorted(set(all_people)):
+            break
 
     # if sorted(x) == sorted(set(all_people)):
     #     print("True", y)
@@ -66,7 +70,7 @@ def is_family(tree):
 
 
     # если хоть одно условие False - возвращаем False
-    return (sorted(x) == sorted(set(all_people))) * (not bool(y))
+    return (sorted(x) == sorted(set(all_people))) * y
 
 
 if __name__ == "__main__":
@@ -83,11 +87,11 @@ if __name__ == "__main__":
     #   ['Logan', 'Jack'],
     #   ['Mike', 'Alexander']
     # ]) == True, 'Grandfather'
-    # assert is_family([
-    #   ['Logan', 'Mike'],
-    #   ['Logan', 'Jack'],
-    #   ['Mike', 'Logan']
-    # ]) == False, 'Can you be a father to your father?'
+    assert is_family([
+      ['Logan', 'Mike'],
+      ['Logan', 'Jack'],
+      ['Mike', 'Logan']
+    ]) == False, 'Can you be a father to your father?'
     # assert is_family([
     #   ['Logan', 'Mike'],
     #   ['Logan', 'Jack'],
@@ -99,6 +103,6 @@ if __name__ == "__main__":
     #   ['Mike', 'Alexander']
     # ]) == False, 'Looks like Mike is stranger in Logan\'s family'
 
-    assert is_family([["Logan", "Mike"], ["Alexander", "Jack"], ["Jack", "Logan"]]) == True
+    # assert is_family([["Logan", "Mike"], ["Alexander", "Jack"], ["Jack", "Logan"]]) == True
 
     print("Looks like you know everything. It is time for 'Check'!")
