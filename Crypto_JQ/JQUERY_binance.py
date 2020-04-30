@@ -7,7 +7,7 @@ import json
 url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
 parameters = {
   'start':'1',
-  'limit':'100',
+  'limit':'200',
   'convert':'USD'
 }
 headers = {
@@ -25,23 +25,31 @@ try:
 
   crypto_data={}
 
-  with open("cripto_currenci.xml", "w") as f: # шапка xml
-    f.write('<ValCurs Date="%s" name="Crypto Currency Coinmarketcap">' % data['status']['timestamp'])
-
+  # with open("cripto_currenci.xml", "w") as f: # шапка xml
+  #   f.write('<ValCurs Date="%s" name="Crypto Currency Coinmarketcap">' % data['status']['timestamp'])
+  #
   for i in data['data']:
-
-    with open("cripto_currenci.xml", "a") as f: # Записываем все данные о вылютах
-      f.write('<Valute ID="%d"><Name>%s</Name><Value>%s</Value></Valute>' % (i['id'], i['symbol'], str(i['quote']['USD']['price']).replace(".", ",")))
-
+  #
+  #   with open("cripto_currenci.xml", "a") as f: # Записываем все данные о вылютах
+  #     f.write('<Valute ID="%d"><Name>%s</Name><Value>%s</Value></Valute>' % (i['id'], i['symbol'], str(i['quote']['USD']['price']).replace(".", ",")))
+  #
     crypto_data[i["symbol"]] = i["quote"]["USD"]["price"]
+  #
+  # with open("cripto_currenci.xml", "a") as f: # футер xml
+  #   f.write('</ValCurs>')
 
-  with open("cripto_currenci.xml", "a") as f: # футер xml
-    f.write('</ValCurs>')
+  my_portfolio = ["XEM", "BTS", "XRP", "XMR", "DGB", "EOS", "SC", "ZEC", "ARDR"]
 
+  for i in my_portfolio:
+    print(i)
+    print(str(crypto_data[i]).replace(".", ","))
 
-  for i in crypto_data:
-    print(i, "-", crypto_data[i])
-  print(response.text)
+  # for i in crypto_data:
+  #   print(i, " ", crypto_data[i])
+  # for i in crypto_data:
+  #   print(str(crypto_data[i]).replace(".", ","))
+  # print(response.text)
+
 except (ConnectionError, Timeout, TooManyRedirects) as e:
   print(e)
 
