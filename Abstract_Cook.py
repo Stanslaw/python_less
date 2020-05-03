@@ -1,7 +1,16 @@
 class AbstractCook:
+    def __init__(self, first_course=0, drink=
+        self.first_course = first_course
+        self.drink = drink
+
+    def add_food(self, first_course, drink):
+        self.first_course = first_course
+        self.drink = dr
     pass
 
 class JapaneseCook(AbstractCook):
+    def __init__(self, first_course, drink):
+        super().__init__(first_course, drink)
     pass
 
 class RussianCook(AbstractCook):
