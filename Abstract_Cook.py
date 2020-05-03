@@ -1,22 +1,38 @@
 class AbstractCook:
-    def __init__(self, first_course=0, drink=
-        self.first_course = first_course
-        self.drink = drink
+    def __init__(self):
+        self.first_course = 0
+        self.drink = 0
 
-    def add_food(self, first_course, drink):
-        self.first_course = first_course
-        self.drink = dr
+    def add_food(self, number, coast):
+        self.first_course += number * coast
+
+    def add_drink(self, number, coast):
+        self.drink += number * coast
+
     pass
 
 class JapaneseCook(AbstractCook):
-    def __init__(self, first_course, drink):
-        super().__init__(first_course, drink)
+    # def __init__(self, first_course=0, drink=0):
+    #     super().__init__(first_course, drink)
+
+    def total(self):
+        self.total_cust = "Sushi: %s, Tea: %s, Total: %s" % (self.first_course, self.drink, self.first_course + self.drink)
+        print(self.total_cust)
+        return self.total_cust
     pass
 
 class RussianCook(AbstractCook):
+    def total(self):
+        self.total_cust = "Dumplings: %s, Compote: %s, Total: %s" % (self.first_course, self.drink, self.first_course + self.drink)
+        print(self.total_cust)
+        return self.total_cust
     pass
 
 class ItalianCook(AbstractCook):
+    def total(self):
+        self.total_cust = "Pizza: %s, Juice: %s, Total: %s" % (self.first_course, self.drink, self.first_course + self.drink)
+        print(self.total_cust)
+        return self.total_cust
     pass
 
 
