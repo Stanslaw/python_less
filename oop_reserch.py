@@ -1,37 +1,25 @@
-class Num_s(int):
-    def __init__(self, num):
-        self.num = num
+class Capital():
+    _instance = None
 
-        if self.num % 2 == 0:
-            self.chet = True
-        else:
-            self.chet = False
+    # @staticmethod
+    def inst(name):
+        if not Capital._instance:
+            Capital._instance = name
+        # print(Capital._instance)
+        return Capital._instance
 
-        print("New class is done")
+    #single call check
+    def __init__(self, name):
+        Capital.inst(name)
+        print("Constructor called!")
 
-    def div_on_2(self):
-        print("The number can division on 2") if self.chet else print("The number can NOT division on 2")
-
-
-class Division_on_5 (Num_s):
-    def __init__(self, num):
-        super().__init__(num)
-
-        if self.num % 5 == 0:
-            self.d5 = True
-        else:
-            self.d5 = False
+    def name(self):
+        return Capital._instance
 
 
+a = Capital("Aht")
+b = Capital("Lvov")
 
-y = Division_on_5(31)
+print(a.name())
+print(b.name())
 
-print(y)
-print(y.d5)
-print(y.chet)
-
-y.div_on_2()
-
-# x = Num_s(1982984)
-# print(x)
-# print(x.chet)
