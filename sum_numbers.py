@@ -1,11 +1,11 @@
 def sum_numbers(text: str) -> int:
     # your code here
     s = 0
-    for i in text.split(" "):
-        # print(i, i.isdigit())
+    for i in text.split():
+        print(i, i.isdigit())
         if i.isdigit():
             s += float(i)
-            # print("!!!")
+            print("!!!")
     return s
 
 
