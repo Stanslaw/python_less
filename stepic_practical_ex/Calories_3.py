@@ -11,20 +11,21 @@ KBJU = list(zip(sheet1.col_values(0, 1), sheet1.col_values(1, 1), sheet1.col_val
 KBJU2 = {}
 
 for val in KBJU:
-    tmp = list(val[1:])
+    tmp = list(map(lambda x: x if x else 0, list(val[1:])))
+
     # print(tmp)
-    for idx, val1 in enumerate(tmp):
-        if not val1:
+    # for idx, val1 in enumerate(tmp):
+    #     if not val1:
             # print("Have none")
-            tmp[idx] = 0
+            # tmp[idx] = 0
         # print(tmp)
     KBJU2[val[0]] = tmp
 
-# print(KBJU2)
+print(KBJU2)
 
 gramms = list(zip(sheet2.col_values(0, 1), sheet2.col_values(1, 1), sheet2.col_values(2, 1)))
-# print("__________________")
-print(gramms)
+print("__________________")
+# print(gramms)
 
 all_sums = []
 summ_cust = np.array([0., 0., 0., 0.])
