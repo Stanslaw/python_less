@@ -46,8 +46,6 @@ all_sums.append(list(summ_cust))
 
 # print(summ_cust)
 for row in all_sums:
-    for i in row:
-        print(int(i), end=" ")
-    print()
+    print(*list(map(lambda x: int(x), row)))
 
 
