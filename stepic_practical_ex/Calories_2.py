@@ -24,38 +24,12 @@ gramms = list(zip(sheet2.col_values(0, 1), sheet2.col_values(1, 1)))
 
 print(gramms)
 
-# def multiplicate_cal(list_cust):
-#
-#     list_cust_new = []
-#     for i in list_cust[1:]:
-#         list_cust_new.append(i*list_cust[0]/100)
-#     return list_cust_new
-
-
 summ_cust = np.array([0., 0., 0., 0.])
 
 for i in gramms:
     tmp = np.array(KBJU2[i[0]]) * i[1] / 100
     summ_cust += tmp
     # print(tmp)
-
-
-#
-# gramms2 = {}
-# for val in gramms:
-#     gramms2[val[0]] = multiplicate_cal(list(val[1:]) + KBJU2[val[0]])
-#
-#
-# summ_cust = np.array([0., 0., 0., 0.])
-# # print(summ_cust)
-#
-# for i in gramms2:
-#     # print(gramms2[i])
-#     tmp = np.array(gramms2[i])
-#     # print(tmp)
-#     summ_cust += tmp
-
-
 
 
 print(KBJU2)
