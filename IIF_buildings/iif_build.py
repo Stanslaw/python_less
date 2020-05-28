@@ -6,7 +6,7 @@ data2 = data.iloc[1:,:4]
 data2.columns = data.iloc[0,:4]
 
 data_street_serpuhov = {}
-data_region = {}
+data_region = []
 
 def clear_num(num1, num2):
     """"
@@ -33,13 +33,16 @@ def clear_num(num1, num2):
         # Здесь надо из num1 изьять префик который пойдет в num2
         if isinstance(num1, int) or num1.isdigit():
             num1 = int(num1)
+            # print("IF - ", num1, num2)
+        elif not re.findall(r'-|/', num1):
+            num2 = str(*re.findall(r'\D+', num1))
+            num1 = int(*re.findall(r'\d+', num1))
+            # print("ELIF - ", num1, num2)
         else:
-            print(num1)
             num1, num2 = re.split(r'-|/', num1)
             # print(num1, num2)
             num1 = int(num1)
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+            # print("ELSE - ", num1, num2)
 
 
 
@@ -77,7 +80,8 @@ def street_search(street):
 
 
 # Устанавливаем правила формирования префиксов
-correct_prefix = {"переулок":"пер.",
+correct_prefix = {"бульвар":"Бульвар",
+                  "переулок":"пер.",
                   "пер":"пер.",
                   "ул":"ул.",
                   "пр-д":"проезд",
@@ -95,10 +99,10 @@ for nas in data2.values[:]:
 
         # меняем все неправильные префиксы на правильные
         # если есть упоминание без точки - меняем на упоминание с точкой или как в словаре
-        if re.findall(r'пер$|ул$|пр-д|пр-т|пл\.|переулок', nas[1]):
+        if re.findall(r'пер$|ул$|пр-д|пр-т|пл\.|переулок|\bбульвар', nas[1]):
             for i, j in correct_prefix.items():
                 # По ходу цикла входные данные могут меняться поэтому еще одна проверка
-                if re.findall(r'пер$|ул$|пр-д|пр-т|пл\.|переулок', nas[1]):
+                if re.findall(r'пер$|ул$|пр-д|пр-т|пл\.|переулок|\bбульвар', nas[1]):
                     nas[1] = nas[1].replace(i, j)
 
         # делаем проверку адресов, если в тексте нет ул. пер. и тд. подставляем в конец УЛ.
@@ -113,16 +117,72 @@ for nas in data2.values[:]:
             data_street_serpuhov[nas[1]] += [num_building]
         else:
             data_street_serpuhov[nas[1]] = [num_building]
-    # print(nas)
+
+    elif nas[0] not in ["Серпухов", "Сепрухов"]:
+        data_region.append(nas[0])
+
+    elif not street_search(nas[1]) and (nas[1] not in ["дом", "Серпухов", "Сепрухов"]):
+        data_region.append(nas[1])
+        # print(nas[0], nas[1])
+
+#!!!!!!!!!!!!!!! Нужны доп фильтры для деревень, встречаются повторы
+
+data_region = sorted(list(set(data_region)))
+
+print(data_region)
+
+
+# Записываем в файл данные в виде HTML странички
+f = open('abon_html.txt', 'w', encoding="utf-8")
+f.write('''[vc_row][vc_column][vc_column_text]Институт инженерной физики в соответствии с решением Администрации города Серпухова, осуществляет строительство локальной компьютерной сети с выходом в Интернет в семи условно обозначенных районах города Серпухова, а также в Серпуховском районе.[/vc_column_text][/vc_column][/vc_row]
+[vc_row][vc_column width="1/2"][vc_column_text]<h2 align="center">Cерпухов</h2>
+<table class="matros radius" border="0" width="100%" cellspacing="1" cellpadding="5">
+<tbody>
+<tr>
+    <th align="center" valign="top" width="150">Название улицы</th>
+    <th align="center" valign="top">Номер дома</th>
+</tr>\n ''')
 
 
 
+
+# Конечный цикл формирования данных по Серпухову
 for strt in sorted(data_street_serpuhov):
-    print(strt, end=" - ")
-    for house_num in data_street_serpuhov[strt]:
-        print(house_num, end=", ")
+    # print(strt, end=" - ")
+    tmp = []
 
-    print()
+    for house_num in sorted(data_street_serpuhov[strt]):
+        # print(house_num[1], end=", ")
+        if house_num[1] != "" and house_num[1] not in tmp:
+            # print(house_num[1])
+            tmp.append(house_num[1])
 
+    data_street_serpuhov[strt] = tmp
+
+    # print(strt, " - ", data_street_serpuhov[strt], " - ", ", ".join(tmp))
+
+
+    # Формируем таблицу HTML для по Серпухову
+    f.write(f'''<tr>
+    <td>{strt}</td>
+    <td>{", ".join(tmp)}</td>
+</tr>\n''')
+
+f.write('''</tbody>
+</table>
+[/vc_column_text][/vc_column]''')
+
+        # Здесь можно формировать HTML для сайта по Деревням
+
+f.write('''[vc_column width="1/2"][vc_column_text]<h2 align="center">Cерпуховский район</h2>\n''')
+
+for vilage in data_region:
+    f.write(f'''    <div class="vilage_button_cust">{vilage}</div>\n''')
+
+f.write('''[/vc_column_text][/vc_column][/vc_row]''')
+
+
+
+f.close()
 
 # print(data_street_serpuhov)
