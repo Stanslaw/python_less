@@ -1,9 +1,12 @@
 import pandas as pd
 import re
+from datetime import date, datetime
 
-data = pd.read_excel("table_2020-05-26_15-55.xlsx")
-data2 = data.iloc[1:,:4]
-data2.columns = data.iloc[0,:4]
+data = pd.read_excel("C:/Users/Stanslaw/Desktop/table_abon.xlsx")
+data2 = data.iloc[1:,[0,1,2,3,4,8]]
+data2.columns = data.iloc[0,[0,1,2,3,4,8]]
+
+print(data2)
 
 data_street_serpuhov = {}
 data_region = []
@@ -78,6 +81,16 @@ def street_search(street):
 
     return not bool(answer)
 
+def region_search(name):
+    """"
+    Принимаем название деревни. Если там нет формальных признаков - пос., дер., с. возвращаем False
+    """
+
+    if re.findall(r'дер\.$|пос\.$|с\.$|СНТ|КП|Серпухов-|ДНП|ст\.', name):
+        return True
+    # print(name)
+    return False
+
 
 # Устанавливаем правила формирования префиксов
 correct_prefix = {"бульвар":"Бульвар",
@@ -90,8 +103,25 @@ correct_prefix = {"бульвар":"Бульвар",
                   }
 
 
+iter_cust = 0
+all_abonents = 0
+fresh_date = datetime(2000, 1, 1)
+print()
 
 for nas in data2.values[:]:
+
+    # Вычисляем самую свежую дату
+
+    # Последняя синхронизация с БД
+    iter_cust += 1
+    if isinstance(nas[5], datetime) and fresh_date < nas[5]:
+        fresh_date = nas[5]
+
+    # Подсчет всех абонентов
+    if isinstance(nas[4], int):
+        all_abonents += nas[4]
+
+
 
     # Основной цикл перебора всех адресов и фильтрация многоквартирных домов Серпухова
     if nas[0] == "Серпухов" and street_search(nas[1]):
@@ -119,30 +149,17 @@ for nas in data2.values[:]:
             data_street_serpuhov[nas[1]] = [num_building]
 
     elif nas[0] not in ["Серпухов", "Сепрухов"]:
-        data_region.append(nas[0])
+        # print(nas[0])
+        if region_search(nas[0]):
+            data_region.append(nas[0])
 
     elif not street_search(nas[1]) and (nas[1] not in ["дом", "Серпухов", "Сепрухов"]):
-        data_region.append(nas[1])
+        if region_search(nas[1]):
+            data_region.append(nas[1])
         # print(nas[0], nas[1])
 
-#!!!!!!!!!!!!!!! Нужны доп фильтры для деревень, встречаются повторы
 
 data_region = sorted(list(set(data_region)))
-
-print(data_region)
-
-
-# Записываем в файл данные в виде HTML странички
-f = open('abon_html.txt', 'w', encoding="utf-8")
-f.write('''[vc_row][vc_column][vc_column_text]Институт инженерной физики в соответствии с решением Администрации города Серпухова, осуществляет строительство локальной компьютерной сети с выходом в Интернет в семи условно обозначенных районах города Серпухова, а также в Серпуховском районе.[/vc_column_text][/vc_column][/vc_row]
-[vc_row][vc_column width="1/2"][vc_column_text]<h2 align="center">Cерпухов</h2>
-<table class="matros radius" border="0" width="100%" cellspacing="1" cellpadding="5">
-<tbody>
-<tr>
-    <th align="center" valign="top" width="150">Название улицы</th>
-    <th align="center" valign="top">Номер дома</th>
-</tr>\n ''')
-
 
 
 
@@ -159,22 +176,16 @@ for strt in sorted(data_street_serpuhov):
 
     data_street_serpuhov[strt] = tmp
 
-    # print(strt, " - ", data_street_serpuhov[strt], " - ", ", ".join(tmp))
 
 
-    # Формируем таблицу HTML для по Серпухову
-    f.write(f'''<tr>
-    <td>{strt}</td>
-    <td>{", ".join(tmp)}</td>
-</tr>\n''')
 
-f.write('''</tbody>
-</table>
-[/vc_column_text][/vc_column]''')
+# Записываем в файл данные в виде HTML странички
 
-        # Здесь можно формировать HTML для сайта по Деревням
-
-f.write('''[vc_column width="1/2"][vc_column_text]<h2 align="center">Cерпуховский район</h2>\n''')
+f = open('abon_html.txt', 'w', encoding="utf-8")
+# Формируем первый блок
+f.write('''[vc_row][vc_column][vc_column_text]Институт инженерной физики в соответствии с решением Администрации города Серпухова, осуществляет строительство локальной компьютерной сети с выходом в Интернет в семи условно обозначенных районах города Серпухова, а также в Серпуховском районе.[/vc_column_text][/vc_column][/vc_row]''')
+# Второй блок, первый столбец - данные по деревням
+f.write('''[vc_row][vc_column width="1/2"][vc_column_text]\n''')
 
 for vilage in data_region:
     f.write(f'''    <div class="vilage_button_cust">{vilage}</div>\n''')
@@ -182,7 +193,42 @@ for vilage in data_region:
 f.write('''[/vc_column_text][/vc_column][/vc_row]''')
 
 
+# Второй блок, второй столбец - данные по Серпухову
+
+f.write('''\n[vc_row][vc_column width="1/2"][vc_column_text]<h2 align="center">Cерпухов</h2>
+<table class="matros radius" border="0" width="100%" cellspacing="1" cellpadding="5">
+<tbody>
+<tr>
+    <th align="center" valign="top" width="150">Название улицы</th>
+    <th align="center" valign="top">Номер дома</th>
+</tr>\n''')
+
+
+for street, adress in sorted(data_street_serpuhov.items()):
+    f.write(f'''<tr>
+    <td>{street}</td>
+    <td>{", ".join(adress)}</td>
+</tr>\n ''')
+
+f.write('''</tbody>
+</table>
+[/vc_column_text][/vc_column][/vc_row]''')
 
 f.close()
 
-# print(data_street_serpuhov)
+
+
+# Здесь выводим всю информацию на экран
+
+# Актуальность данных, последняя синхронизация
+print("Последняя синхронизация -", fresh_date, end="\n\n")
+# Количество абонентов
+print("Общее количество абонентов - ", all_abonents , end="\n\n")
+# Количество деревень
+print("Количество деревень - ", len(data_region), end="\n\n")
+# Количество улиц
+print("Количество улиц - ", len(data_street_serpuhov), end="\n\n")
+# Деревни и поселки
+print(data_region, end="\n\n")
+# Адреса Серпухов
+print(sorted(data_street_serpuhov.items()), end="\n\n")
