@@ -226,8 +226,11 @@ print("Последняя синхронизация -", fresh_date, end="\n\n")
 print("Общее количество абонентов - ", all_abonents , end="\n\n")
 # Количество деревень
 print("Количество деревень - ", len(data_region), end="\n\n")
-# Количество улиц
-print("Количество улиц - ", len(data_street_serpuhov), end="\n\n")
+# Количество домов
+all_houses = 0
+for i in data_street_serpuhov:
+    all_houses += len(data_street_serpuhov[i])
+print("Количество домов - ", all_houses, end="\n\n")
 # Деревни и поселки
 print(data_region, end="\n\n")
 # Адреса Серпухов
