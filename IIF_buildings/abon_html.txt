@@ -16,7 +16,9 @@
     <div class="vilage_button_cust">Глазово дер.</div>
     <div class="vilage_button_cust">Глубоково дер.</div>
     <div class="vilage_button_cust">Гурьево дер.</div>
+    <div class="vilage_button_cust">ДНП "4 Сезона"</div>
     <div class="vilage_button_cust">ДНП "Берег Нары"</div>
+    <div class="vilage_button_cust">ДНП "Сосновый бор"</div>
     <div class="vilage_button_cust">Данки дер.</div>
     <div class="vilage_button_cust">Дашковка дер.</div>
     <div class="vilage_button_cust">Дракино дер.</div>
@@ -45,6 +47,7 @@
     <div class="vilage_button_cust">Оболенск пос.</div>
     <div class="vilage_button_cust">Палехово дер.</div>
     <div class="vilage_button_cust">Палихово дер.</div>
+    <div class="vilage_button_cust">Паниково дер.</div>
     <div class="vilage_button_cust">Пограничный пос.</div>
     <div class="vilage_button_cust">Подмоклово дер.</div>
     <div class="vilage_button_cust">Прилуки дер.</div>
