@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-data = pd.read_json('result.json')
+data = pd.read_json('C:/Users/Stanslaw/Desktop/Jupiter/Clients_iif/result.json')
 
 data.sort_values(by='datetime', inplace=True)
 data.dropna(how='all', inplace=True)
@@ -30,6 +30,6 @@ data_2 = data.groupby('hours', as_index=False).count()
 
 print(data_2)
 
-fig = px.line(data_2, x='hours', y='datetime', title='Times of activity', line_dash_map='')
+fig = px.line(data_2, x='hours', y='datetime', title='Times of activity')
 fig.show()
 
