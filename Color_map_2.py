@@ -115,26 +115,26 @@ if __name__ == '__main__':
             print("Excess colors in the result")
             return False
         return True
-    # assert checker(color_map, (
-    #     (0, 0, 0),
-    #     (0, 1, 1),
-    #     (0, 0, 2),
-    # )), "Small"
-    # assert checker(color_map, (
-    #     (0, 0, 2, 3),
-    #     (0, 1, 2, 3),
-    #     (0, 1, 1, 3),
-    #     (0, 0, 0, 0),
-    # )), "4X4"
-    # assert checker(color_map, (
-    #     (1, 1, 1, 2, 1, 1),
-    #     (1, 1, 1, 1, 1, 1),
-    #     (1, 1, 0, 1, 1, 1),
-    #     (1, 0, 0, 0, 1, 1),
-    #     (1, 1, 0, 4, 3, 1),
-    #     (1, 1, 1, 3, 3, 3),
-    #     (1, 1, 1, 1, 3, 5),
-    # )), "6 pack"
+    assert checker(color_map, (
+        (0, 0, 0),
+        (0, 1, 1),
+        (0, 0, 2),
+    )), "Small"
+    assert checker(color_map, (
+        (0, 0, 2, 3),
+        (0, 1, 2, 3),
+        (0, 1, 1, 3),
+        (0, 0, 0, 0),
+    )), "4X4"
+    assert checker(color_map, (
+        (1, 1, 1, 2, 1, 1),
+        (1, 1, 1, 1, 1, 1),
+        (1, 1, 0, 1, 1, 1),
+        (1, 0, 0, 0, 1, 1),
+        (1, 1, 0, 4, 3, 1),
+        (1, 1, 1, 3, 3, 3),
+        (1, 1, 1, 1, 3, 5),
+    )), "6 pack"
 
     assert checker(color_map, (
         (7, 4, 4, 4,),
