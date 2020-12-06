@@ -1,3 +1,4 @@
+#!/anaconda3/bin/python3
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
@@ -17,7 +18,6 @@ headers = {
 
 session = Session()
 session.headers.update(headers)
-
 try:
   response = session.get(url, params=parameters)
   # print(response.text)
@@ -42,6 +42,7 @@ try:
 
   for i in my_portfolio:
     print(i)
+    # print(crypto_data[i])
     print(str(crypto_data[i]).replace(".", ","))
 
   # for i in crypto_data:
@@ -52,8 +53,3 @@ try:
 
 except (ConnectionError, Timeout, TooManyRedirects) as e:
   print(e)
-
-
-
-
-
