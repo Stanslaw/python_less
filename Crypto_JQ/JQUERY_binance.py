@@ -38,10 +38,10 @@ try:
   # with open("cripto_currenci.xml", "a") as f: # футер xml
   #   f.write('</ValCurs>')
 
-  my_portfolio = ["XEM", "BTS", "XRP", "XMR", "DGB", "EOS", "SC", "ZEC", "ARDR"]
+  my_portfolio = ["XEM", "BTS", "XRP", "XMR", "DGB", "EOS", "SC", "ZEC", "ARDR", "LTC"]
 
   for i in my_portfolio:
-    print(i)
+    # print(i)
     # print(crypto_data[i])
     print(str(crypto_data[i]).replace(".", ","))
 
@@ -50,6 +50,5 @@ try:
   # for i in crypto_data:
   #   print(str(crypto_data[i]).replace(".", ","))
   # print(response.text)
-
-except (ConnectionError, Timeout, TooManyRedirects) as e:
+  # except (ConnectionError, Timeout, TooManyRedirects) as e:
   print(e)
