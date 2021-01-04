@@ -51,4 +51,6 @@ try:
   #   print(str(crypto_data[i]).replace(".", ","))
   # print(response.text)
   # except (ConnectionError, Timeout, TooManyRedirects) as e:
+
+except (ConnectionError, Timeout, TooManyRedirects) as e:
   print(e)
