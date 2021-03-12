@@ -7,47 +7,67 @@ from math import sqrt
 def count_chains(circles: List[Tuple[int, int, int]]) -> int:
 
     # your code here
-    print(circles)
+    print("!!!", circles, "\n")
 
     chains = []
 
-    # Формируем список всех возможных комбинаций
+    # We form a list of all possible combinations
     for ones in itertools.combinations(circles, 2):
 
-        # Rr - расстояния между центрами откружностей
-        # R - радиус большей окружности
-        # r - радиус меньшей окружности
+        # Rr - distance between centers of circles
+        # R - radius of the larger circle
+        # r - smaller circle radius
 
         Rr = sqrt((ones[0][0]-ones[1][0])**2 + (ones[0][1]-ones[1][1])**2)
         R = max([ones[0][2], ones[1][2]])
         r = min([ones[0][2], ones[1][2]])
 
-        # Если квадрат суммы радиусов больше квадратов катетов (по Пифагору) звенья пересекаются либо включены друг в друга
+        # If the square of the sum of the radii is greater than the squares of the legs (according to Pythagoras),
+        # the links intersect or are included in each other
         if R - Rr >= r:
             continue
         elif R + r > Rr:
             chains.append([*ones])
 
-    # Теперь надо делать слияние пересекающихся цепочек.
+    # Now we need to merge the intersecting chains
 
+    for i in range(2**len(circles)):
+        if not chains:
+            break
 
+        # print("chains = ", chains)
+        f_el = chains.pop(0)
+        # print("f_el = ", f_el, "\n")
 
-    # # Добавляем к списку последовательностей одиночные звенья
-    # for cir in circles:
-    #     # print("cir = ", cir)
-    #
-    #     if not chains:
-    #         chains.append([cir])
-    #
-    #     flag = True
-    #
-    #     for i in chains:
-    #         # print("i = ", i, "cir = ", cir)
-    #         if cir in i:
-    #             flag = False
-    #     if flag:
-    #         chains.append([cir])
-    #
+        flag = True
+
+        for chain in chains:
+
+            for i in f_el:
+                if i in chain:
+                    chain.extend(f_el)
+                    flag = False
+                    break
+
+        if flag:
+            chains.append(f_el)
+
+    # Adding single links to the sequence list
+    for cir in circles:
+        # print("cir = ", cir)
+
+        if not chains:
+            chains.append([cir])
+
+        flag = True
+
+        for i in chains:
+            # print("i = ", i, "cir = ", cir)
+            if cir in i:
+                flag = False
+        if flag:
+            chains.append([cir])
+
     print("\n", "chains = ", chains, "len = ", len(chains))
     return len(chains)
 
