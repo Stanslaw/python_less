@@ -24,33 +24,11 @@ def count_chains(circles: List[Tuple[int, int, int]]) -> int:
 
         # Если квадрат суммы радиусов больше квадратов катетов (по Пифагору) звенья пересекаются либо включены друг в друга
         if R - Rr >= r:
-            pass
+            continue
         elif R + r > Rr:
-            # Если мы находим пересекающиеся звенья надо их сравнить с уже имеющимися цепочками и либо добавить новую, либо добавиь звено
-            if chains:
-                flag_0 = True
-                flag_1 = True
-                for i in chains:
-                    if ones[0] in i:
-                        # print("ones_0 = ", ones[0], "i = ", i, "+ ones_1 = ", ones[1])
-                        if ones[1] not in i:
-                            i.append(ones[1])
-                        # print("new_i = ", i)
-                        flag_0 = False
-                    elif ones[1] in i:
-                        # print("ones_1 = ", ones[1], "i = ", i, "+ ones_0 = ", ones[0])
-                        if ones[0] not in i:
-                            i.append(ones[0])
-                        # print("new_i = ", i)
-                        flag_1 = False
-                if flag_0 and flag_1:
-                    chains.append([*ones])
+            chains.append([*ones])
 
-                    # print("+++")
-            else:
-                chains.append([*ones])
-
-    # Все равно получаются разорванные последовательности. Надо еще раз проверять на вхождение одна в другую.
+    # Теперь надо делать слияние пересекающихся цепочек.
 
 
 
