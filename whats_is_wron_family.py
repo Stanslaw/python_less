@@ -5,6 +5,11 @@ def is_family(tree):
     # 1. каждый элемент связан с первым
     # 2. Нет циклов
 
+    # print(tree)
+
+    # y = set(["a", "b", "c"])
+    # y = y - set("c")
+    # print(y)
 
     # делаем граф
     graf = {}
@@ -22,87 +27,75 @@ def is_family(tree):
         all_people.update(set([i[0], i[1]]))
 
     print(graf)
-    print(set(all_people))
-    print("___________________")
+    # print(sorted(set(all_people)))
 
     # обходим граф по всем вершинам если из первой вершини проходят все остальные
     # считаем что первое условие True
 
 
-    def dfs(graph, start, visited=None, flag=None):
-        if visited == None:
-            flag = True
+    def dfs(graph, start, visited=None, flag = None):
+        if visited is None:
             visited = set()
-
+            flag = True
         visited.add(start)
-        print("Visited -", visited, "Flag -", flag)
 
 
-        for next in graph[start]:
-            if next in visited:
-                flag = False
-                print(next, visited, flag, "CICLE")
 
+        for next in graph[start] - visited:
+            if next in graph:
+               dfs(graph, next, visited)
             else:
-                if next in graph:
-                   visited, flag = dfs(graph, next, visited, flag)
-                else:
-                    visited.add(next)
-                    print("Visited -", visited, "Flag -", flag)
+                visited.add(next)
 
-        print("Visited -", visited, "Flag -", flag)
+            if not graph[start].isdisjoint(visited):
+                print("graph[start]", graph[start], "visited", visited)
+                flag = False
+
         return [visited, flag]
 
 
     # print(tree[0][0])
 
-    for i in graf:
-        print(i)
-        x, y = dfs(graf, i)
-        print("FUN - ", sorted(x), sorted(set(all_people)), y)
-        if sorted(x) == sorted(set(all_people)):
-            break
+    x, y = dfs(graf, str(tree[0][0]))[0], dfs(graf, str(tree[0][0]))[1]
+    print("FUN - ", sorted(x))
 
-    # if sorted(x) == sorted(set(all_people)):
-    #     print("True", y)
-    #
-    #     first_u = True
+    if sorted(x) == sorted(set(all_people)):
+        print("True", y)
+
+        first_u = True
 
 
-    # если хоть одно условие False - возвращаем False
-    return (sorted(x) == sorted(set(all_people))) * y
+
+    return True
 
 
 if __name__ == "__main__":
     #These "asserts" using only for self-checking and not necessary for auto-testing
-    assert is_family([
-      ['Logan', 'Mike']
-    ]) == True, 'One father, one son'
-    assert is_family([
-      ['Logan', 'Mike'],
-      ['Logan', 'Jack']
-    ]) == True, 'Two sons'
-    assert is_family([
-      ['Logan', 'Mike'],
-      ['Logan', 'Jack'],
-      ['Mike', 'Alexander']
-    ]) == True, 'Grandfather'
+    # assert is_family([
+    #   ['Logan', 'Mike']
+    # ]) == True, 'One father, one son'
+    # assert is_family([
+    #   ['Logan', 'Mike'],
+    #   ['Logan', 'Jack']
+    # ]) == True, 'Two sons'
+    # assert is_family([
+    #   ['Logan', 'Mike'],
+    #   ['Logan', 'Jack'],
+    #   ['Mike', 'Alexander']
+    # ]) == True, 'Grandfather'
     assert is_family([
       ['Logan', 'Mike'],
       ['Logan', 'Jack'],
       ['Mike', 'Logan']
     ]) == False, 'Can you be a father to your father?'
-    assert is_family([
-      ['Logan', 'Mike'],
-      ['Logan', 'Jack'],
-      ['Mike', 'Jack']
-    ]) == False, 'Can you be a father to your brother?'
-    assert is_family([
-      ['Logan', 'William'],
-      ['Logan', 'Jack'],
-      ['Mike', 'Alexander']
-    ]) == False, 'Looks like Mike is stranger in Logan\'s family'
-
-    assert is_family([["Logan", "Mike"], ["Alexander", "Jack"], ["Jack", "Logan"]]) == True
-
+    # assert is_family([
+    #   ['Logan', 'Mike'],
+    #   ['Logan', 'Jack'],
+    #   ['Mike', 'Jack']
+    # ]) == False, 'Can you be a father to your brother?'
+    # assert is_family([
+    #   ['Logan', 'William'],
+    #   ['Logan', 'Jack'],
+    #   ['Mike', 'Alexander']
+    # ]) == False, 'Looks like Mike is stranger in Logan\'s family'
     print("Looks like you know everything. It is time for 'Check'!")
