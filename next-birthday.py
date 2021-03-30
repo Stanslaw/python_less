@@ -6,10 +6,8 @@ Date = Tuple[int, int, int]
 
 def next_birthday(today: Date, birthdates: Dict[str, Date]) -> Tuple[int, Dict[str, int]]:
 
-    # print(today)
     today_date = datetime.date(*today)
     # print(today_date, end='\n\n')
-
     # print(today_date.day)
 
     results = []
@@ -39,30 +37,27 @@ def next_birthday(today: Date, birthdates: Dict[str, Date]) -> Tuple[int, Dict[s
             my_BD_is_in_visok = True
             # print("Years = ", years)
         elif delta_months < 0:
-            # ДР только будет в этом году
+            # Birthday will be this year
             years = delta_years
             # print("Years = ", years)
         elif delta_months == 0 and delta_days < 0:
-            # ДР только будет через несколько дней
+            # Birthday will be in a few days
             years = delta_years
             # print("Years = ", years)
         elif delta_months == 0 and delta_days == 0:
-            # ДР сегодня
+            # Birthday NOW
             years = delta_years
             # print("Years now = ", years)
         else:
-            # ДР будет через год
+            # Birthday will be in a next year
             years = delta_years + 1
             birthsday_in_the_next_year = True
             # print("Years+1 =", years)
 
 
         if birthsday_in_the_next_year:
-            # print("+", end=' ')
-            # how_long_to_bsd = (datetime.date(today_date.year, brs.month, brs.day) - today_date) #+ datetime.timedelta(days=365)
-            # how_many_days_in_next_year = datetime.date(today_date.year + 1, brs.month, brs.day) - datetime.date(today_date.year, brs.month, brs.day)
 
-            # Пробуем вычисление даты - если выпадает ошибка значит это 29.02.хххх в невысокостном году. Меняем дату на первое марта
+            # We try to calculate the date - if an error occurs, it means it is 02.29.xxxx in a low year. Change the date to March 1st
             try:
                 date_brs_in_next_year = datetime.date(today_date.year + 1, brs.month, brs.day)
             except ValueError:
@@ -74,7 +69,6 @@ def next_birthday(today: Date, birthdates: Dict[str, Date]) -> Tuple[int, Dict[s
                 date_brs_in_this_year = datetime.date(today_date.year, 3, 1)
 
             how_many_days_in_next_year = date_brs_in_next_year - date_brs_in_this_year
-
 
             # print("how_many_days_in_next_year =",  how_many_days_in_next_year.days)
 
@@ -89,15 +83,23 @@ def next_birthday(today: Date, birthdates: Dict[str, Date]) -> Tuple[int, Dict[s
             # print("-", end=' ')
             how_long_to_bsd = datetime.date(today_date.year, brs.month, brs.day) - today_date
 
-
         # print(who, brs, how_long_to_bsd.days, end='\n\n')
 
         results.append((how_long_to_bsd.days, {who: years}))
 
     print(results)
-    print(min(results, key=lambda x:x[0]))
 
-    return min(results, key=lambda x:x[0])
+    min_day_to_BD = min(results, key=lambda x:x[0])[0]
+
+    people_with_min_day_to_BD = {}
+
+    for i in results:
+        if i[0] == min_day_to_BD:
+            people_with_min_day_to_BD.update(i[1])
+
+    # print(min_day_to_BD, people_with_min_day_to_BD)
+
+    return (min_day_to_BD, people_with_min_day_to_BD)
 
 if __name__ == '__main__':
     FAMILY = {
