@@ -42,7 +42,7 @@ try:
   #   f.write('</ValCurs>')
 
   my_portfolio = ["XEM", "BTS", "XRP", "XMR", "DGB", "EOS", "SC", "ZEC", "ARDR", "LTC", "XYM"]
-  my_portfolio_name = ["NEM", "BitShares", "XRP", "Monero", "DigiByte", "EOS", "Siacoin", "Zcash", "Ardor", "Litecoin", "Symbol"]
+  my_portfolio_name = ["NEM", "BitShares", "XRP", "Monero", "DigiByte", "EOS", "Siacoin", "Zcash", "Ardor", "Litecoin", "Symbol", "Binance Coin"]
 
   for i in my_portfolio_name:
     # print(i)
