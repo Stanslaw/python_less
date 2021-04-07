@@ -44,6 +44,10 @@ def remove_brackets(line: str) -> str:
 
     print("FINAL result -", brackers_result)
 
+
+    # Теперь из возможных скобок надо построить все валидные варианты
+
+
     return line
 
 
@@ -52,10 +56,10 @@ if __name__ == '__main__':
     # print(remove_brackets('(()()'))
 
     # These "asserts" are used for self-checking and not for an auto-testing
-    # assert remove_brackets('(()()') == '()()'
+    assert remove_brackets('(()()') == '()()'
     # assert remove_brackets('[][[[') == '[]'
     # assert remove_brackets('[[(}]]') == '[[]]'
-    assert remove_brackets('[[{}()]]') == '[[{}()]]'
+    # assert remove_brackets('[[{}()]]') == '[[{}()]]'
     # assert remove_brackets('[[[[[[') == ''
     # assert remove_brackets('[[[[}') == ''
     # assert remove_brackets('') == ''
