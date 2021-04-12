@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\YAML.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\next-birthday.py">
           <value>
             <Attribute>
