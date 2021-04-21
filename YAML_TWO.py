@@ -4,12 +4,16 @@ def yaml(a):
     print('a -', a, end="\n\n")
     # string = re.findall(r"\w*:|\\\"\w*[,.:]*\w*[,.:]*\\\"|\w+[,.:]*\w*[,.:]*\w*[,.:]*", a)
     # string = re.findall(r"\w*:|\"\w*[ ]*\w*\"|\w+[,.:]*\w*[,.:]*\w*[,.:]*", a)
-    string = re.split(r'[:\n]', a)
+    # string = re.split(r'[:\n]', a)
+    string = re.split(r'(\w+:) |\n', a)
     keys_cust = re.findall(r'[\w]+:', a)
 
 
     print('string -', string, end="\n\n")
+    print('keys_cust -', keys_cust)
+
     # Чистим строку от мусора
+
 
     for idx, txt in enumerate(string):
         # Ключ пропускаем
@@ -23,7 +27,12 @@ def yaml(a):
 
         # print('txt -', txt)
         txt1 = txt.strip()
-        txt2 = re.sub(r'"', '', txt1)
+
+        if txt1 != '\"null\"':
+            txt2 = re.sub(r'"', '', txt1)
+        else:
+            txt2 = txt1
+
         txt3 = re.sub(r'\\', '"', txt2)
         # print('txt2 -', txt2)
         # print('txt3 -', txt3)
@@ -32,7 +41,7 @@ def yaml(a):
 
 
     print('string -', string)
-    print('keys_cust -', keys_cust)
+
 
     result = {}
 
@@ -56,14 +65,15 @@ def yaml(a):
                 result[i] = False
             elif result[i].lower() == 'true':
                 result[i] = True
-
             elif result[i].lower() == 'null':
                 result[i] = None
+            elif result[i].lower() == '\"null\"':
+                result[i] = 'null'
 
 
     for key in keys_cust:
         if key[:-1] not in result:
-            result[key] = None
+            result[key[:-1]] = None
 
     print('result -', result)
 
@@ -108,9 +118,10 @@ if __name__ == '__main__':
     #  'coding: null') == {'children': 6,
     #  'coding': None,
     #  'name': 'Bob Dylan'}
-    assert yaml('name: "Bob Dylan"\n'
-     'children: 6\n'
-     'coding: "null" ') == {'children': 6,
-     'coding': 'null',
-     'name': 'Bob Dylan'}
+    # assert yaml('name: "Bob Dylan"\n'
+    #  'children: 6\n'
+    #  'coding: "null" ') == {'children': 6,
+    #  'coding': 'null',
+    #  'name': 'Bob Dylan'}
+    assert yaml("12: 12") == {"12":12}
     print("Coding complete? Click 'Check' to earn cool rewards!")
