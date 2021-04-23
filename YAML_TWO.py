@@ -2,53 +2,37 @@ import re
 def yaml(a):
     # your code here
     print('a -', a, end="\n\n")
-    # string = re.findall(r"\w*:|\\\"\w*[,.:]*\w*[,.:]*\\\"|\w+[,.:]*\w*[,.:]*\w*[,.:]*", a)
-    # string = re.findall(r"\w*:|\"\w*[ ]*\w*\"|\w+[,.:]*\w*[,.:]*\w*[,.:]*", a)
-    # string = re.split(r'[:\n]', a)
-    string = re.split(r'(\w+:) |\n', a)
-    keys_cust = re.findall(r'[\w]+:', a)
+    string = re.split(r'(\n|\w+: )', a)
+    keys_cust = re.findall(r'\w+:', a)
 
 
-    print('string -', string, end="\n\n")
+    print('string1 -', string, end="\n\n")
     print('keys_cust -', keys_cust)
 
     # Чистим строку от мусора
-
-
-    for idx, txt in enumerate(string):
-        # Ключ пропускаем
-        if txt + ":" in keys_cust:
-            # print('txt!!! ', txt)
+    # Чистим от лишних элементов
+    for el in range(len(string)):
+        pop_el = string.pop(0).strip()
+        if pop_el in ['', '\n']:
             continue
-        # Убираем пустые элементы из строки
-        if not txt:
-            string.pop(idx)
-            continue
-
-        # print('txt -', txt)
-        txt1 = txt.strip()
-
-        if txt1 != '\"null\"':
-            txt2 = re.sub(r'"', '', txt1)
         else:
-            txt2 = txt1
+            # Делаем перестановки данных
+            if pop_el != '\"null\"':
+                pop_el2 = re.sub(r'"', '', pop_el)
+            else:
+                pop_el2 = pop_el
+            pop_el3 = re.sub(r'\\', '"', pop_el2)
 
-        txt3 = re.sub(r'\\', '"', txt2)
-        # print('txt2 -', txt2)
-        # print('txt3 -', txt3)
-        string[idx] = txt3
-        # print("!!! - ", string)
+            string.append(pop_el3)
 
-
-    print('string -', string)
-
+    print('string2 -', string, end="\n\n")
 
     result = {}
 
     for word in string:
         # print(word)
-        if word + ":" in keys_cust:
-            key = word
+        if word in keys_cust:
+            key = word[:-1]
             continue
         try:
             result[key] += ' ' + word
@@ -86,7 +70,7 @@ if __name__ == '__main__':
     # print(yaml('name: Alex\nage: 12'))
 
     # These "asserts" are used for self-checking and not for an auto-testing
-    # assert yaml('name: Alex\nage: 12') == {'age': 12, 'name': 'Alex'}
+    assert yaml('name: Alex\nage: 12') == {'age': 12, 'name': 'Alex'}
     # assert yaml('name: Alex Fox\n'
     #  'age: 12\n'
     #  '\n'
@@ -123,5 +107,5 @@ if __name__ == '__main__':
     #  'coding: "null" ') == {'children': 6,
     #  'coding': 'null',
     #  'name': 'Bob Dylan'}
-    assert yaml("12: 12") == {"12":12}
+    # assert yaml("12: 12") == {"12":12}
     print("Coding complete? Click 'Check' to earn cool rewards!")
