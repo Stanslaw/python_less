@@ -1,24 +1,32 @@
 # Taken from mission The Warriors
 
-class Battle():
-    def __init__(self, one_army, two_army):
-        one_army = self.one_army
-        two_army = self.two_army
-
-    def fight(self):
-        pass
-
+class Battle:
     pass
+
+    def fight(self, army_1, army_2):
+        while True:
+
+            return True
+
+
 
 class Army:
-    pass
+    def __init__(self):
+        self.warriors = 0
+        self.knights = 0
+
+    def add_units(self, type_units, number_of_units):
+        if type_units == Warrior:
+            self.warriors += number_of_units
+        elif type_units == Knight:
+            self.knights += number_of_units
+
 
 class Warrior:
     def __init__(self):
         self.health = 50
         self.attack = 5
         self.is_alive = True
-        return
 
 
 class Knight(Warrior):
@@ -26,20 +34,20 @@ class Knight(Warrior):
         # super().__init__()
         Warrior.__init__(self)
         self.attack = 7
-        return
 
 
 def fight(unit_1, unit_2):
+    # print("!!!", unit_1)
     while True:
         unit_2.health -= unit_1.attack
-        print(unit_2.health, ": Health Unit2")
+        # print(unit_2.health, ": Health Unit2")
         if unit_2.health <= 0:
             unit_2.is_alive = False
             print("First warrior WIN")
             return True
 
         unit_1.health -= unit_2.attack
-        print(unit_1.health, ": Health Unit1")
+        # print(unit_1.health, ": Health Unit1")
         if unit_1.health <= 0:
             unit_1.is_alive = False
             print("Second warrior WIN")
@@ -80,6 +88,9 @@ if __name__ == '__main__':
 
     army_4 = Army()
     army_4.add_units(Warrior, 30)
+
+    print("my_army", army_3.warriors, army_3.knights)
+
 
     battle = Battle()
 
