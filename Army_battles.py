@@ -4,7 +4,9 @@ class Battle:
     pass
 
     def fight(self, army_1, army_2):
+
         while True:
+
 
             return True
 
@@ -89,7 +91,7 @@ if __name__ == '__main__':
     army_4 = Army()
     army_4.add_units(Warrior, 30)
 
-    print("my_army", army_3.warriors, army_3.knights)
+    print("warriors -", army_3.warriors, "knights -", army_3.knights)
 
 
     battle = Battle()
